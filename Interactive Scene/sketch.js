@@ -1,18 +1,17 @@
+
 // Super Square!
-// Your Name
-// Date
+// Austin Moore
+// February 14th 2019
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// - Integrated mouse input into code
+// - 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-	background(255)
-	//noStroke()
+	background(255);
 	xPosition = width/2;
 	yPosition = height/2;
-  rectWidth = random(10, 50);
-	rectHeight = random(10, 50);
   rectColourR = 255;
   rectColourG = 255;
   rectColourB = 255;
@@ -30,10 +29,8 @@ let rectHeight = 15;
 let rectRainbow = false
 
 function draw() {
-  //background(220);
-	fill(rectColourR, rectColourG, rectColourB)
-	//fill(0, 255, 255);
-	rect(xPosition, yPosition, rectWidth, rectHeight)
+	fill(rectColourR, rectColourG, rectColourB);
+	rect(xPosition, yPosition, rectWidth, rectHeight);
 	
 	if (xPosition >= width - rectWidth || xPosition <= 0) {
 		xVelocity *= -1;
@@ -76,17 +73,32 @@ function keyPressed() {
   else if (key === " ") {
     rectRainbow = true;
   }
+  else if (key === "c") {
+      background(255);
+  }
+  else if ((key === "w" || key === "W") && rectHeight > 5) {
+    rectHeight -= 5;
+  }
+  else if ((key === "s" || key === "S") && rectHeight < 100) {
+    rectHeight += 5;
+  }
+  else if ((key === "a" || key === "A") && rectWidth < 5) {
+    rectWidth -= 5;
+  }
+  else if ((key === "d" || key === "D") && rectWidth > 5) {
+    rectWidth += 5;
+  }
   else if (keyCode === LEFT_ARROW){
-    yVelocity *= 0.9
+    xVelocity *= 0.9;
   }
   else if (keyCode === RIGHT_ARROW){
-    yVelocity *= 1.1
+    xVelocity *= 1.1;
   }
   else if (keyCode === UP_ARROW){
-    xVelocity *= 1.1
+    yVelocity *= 1.1;
   }
   else if (keyCode === DOWN_ARROW){
-    xVelocity *= 0.9
+    yVelocity *= 0.9;
   }
 }
 
@@ -94,5 +106,5 @@ function mouseWheel(event) {
   rectColourR = random(0, 255);
   rectColourG = random(0, 255);
   rectColourB = random(0, 255);
-  rectRainbow = false
+  rectRainbow = false;
 }
