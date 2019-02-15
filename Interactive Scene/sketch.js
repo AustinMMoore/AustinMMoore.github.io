@@ -9,9 +9,9 @@
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-	background(255);
-	xPosition = width/2;
-	yPosition = height/2;
+  background(255);
+  xPosition = width/2;
+  yPosition = height/2;
   rectColourR = 255;
   rectColourG = 255;
   rectColourB = 255;
@@ -26,27 +26,27 @@ let xVelocity = 2;
 let yVelocity = 2;
 let rectWidth = 15;
 let rectHeight = 15;
-let rectRainbow = false
+let rectRainbow = false;
 
 function draw() {
-	fill(rectColourR, rectColourG, rectColourB);
-	rect(xPosition, yPosition, rectWidth, rectHeight);
+  fill(rectColourR, rectColourG, rectColourB);
+  rect(xPosition, yPosition, rectWidth, rectHeight);
 	
-	if (xPosition >= width - rectWidth || xPosition <= 0) {
-		xVelocity *= -1;
-	}
+  if (xPosition >= width - rectWidth || xPosition <= 0) {
+    xVelocity *= -1;
+  }
 		
-	if (yPosition >= height - rectHeight || yPosition <= 0) {
-		yVelocity *= -1;
-	}
+  if (yPosition >= height - rectHeight || yPosition <= 0) {
+    yVelocity *= -1;
+  }
   if (rectRainbow === true) {
     rectColourR = random(0, 255);
     rectColourG = random(0, 255);
     rectColourB = random(0, 255);
   }
   
-	xPosition += xVelocity;
-	yPosition += yVelocity;
+  xPosition += xVelocity;
+  yPosition += yVelocity;
 
 }
 
@@ -74,7 +74,7 @@ function keyPressed() {
     rectRainbow = true;
   }
   else if (key === "c") {
-      background(255);
+    background(255);
   }
   else if ((key === "w" || key === "W") && rectHeight > 5) {
     rectHeight -= 5;
@@ -82,10 +82,10 @@ function keyPressed() {
   else if ((key === "s" || key === "S") && rectHeight < 100) {
     rectHeight += 5;
   }
-  else if ((key === "a" || key === "A") && rectWidth < 5) {
+  else if ((key === "a" || key === "A") && rectWidth > 5) {
     rectWidth -= 5;
   }
-  else if ((key === "d" || key === "D") && rectWidth > 5) {
+  else if ((key === "d" || key === "D") && rectWidth < 100) {
     rectWidth += 5;
   }
   else if (keyCode === LEFT_ARROW){
