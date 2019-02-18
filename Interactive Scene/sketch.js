@@ -82,10 +82,10 @@ function keyPressed() {
   else if ((key === "s" || key === "S") && rectHeight < 100) {
     rectHeight += 5;
   }
-  else if ((key === "a" || key === "A") && rectWidth < 5) {
+  else if ((key === "a" || key === "A") && rectWidth > 5) {
     rectWidth -= 5;
   }
-  else if ((key === "d" || key === "D") && rectWidth > 5) {
+  else if ((key === "d" || key === "D") && rectWidth < 100) {
     rectWidth += 5;
   }
   else if (keyCode === LEFT_ARROW){
