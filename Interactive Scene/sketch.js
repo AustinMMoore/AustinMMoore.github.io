@@ -27,6 +27,7 @@ let yVelocity = 2;
 let rectWidth = 15;
 let rectHeight = 15;
 let rectRainbow = false;
+let rectCurve = false;
 
 function draw() {
   fill(rectColourR, rectColourG, rectColourB);
@@ -44,7 +45,9 @@ function draw() {
     rectColourG = random(0, 255);
     rectColourB = random(0, 255);
   }
-  
+  if (rectCurve === true) {
+    xVelocity = yVelocity^2;
+  }
   xPosition += xVelocity;
   yPosition += yVelocity;
 
@@ -73,8 +76,11 @@ function keyPressed() {
   else if (key === " ") {
     rectRainbow = true;
   }
-  else if (key === "c") {
+  else if (key === "c" || key === "C") {
     background(255);
+  }
+  else if (key === "u" || key === "U") {
+    rectCurve = true;
   }
   else if ((key === "w" || key === "W") && rectHeight > 5) {
     rectHeight -= 5;
