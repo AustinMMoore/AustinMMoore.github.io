@@ -28,6 +28,9 @@ let rectWidth = 15;
 let rectHeight = 15;
 let rectRainbow = false;
 let rectCurve = false;
+let rectMaxSize = 200;
+let rectMinSize = 5;
+let rectMaxSpeed = 2;
 
 function draw() {
   fill(rectColourR, rectColourG, rectColourB);
@@ -48,9 +51,10 @@ function draw() {
   if (rectCurve === true) {
     xVelocity = yVelocity^2;
   }
-  xPosition += xVelocity;
-  yPosition += yVelocity;
-
+  if (rectCurve === false) {
+    xPosition += xVelocity;
+    yPosition += yVelocity;
+  }
 }
 
 function keyPressed() {
@@ -79,19 +83,22 @@ function keyPressed() {
   else if (key === "c" || key === "C") {
     background(255);
   }
+  else if (key === "n" || key === "N") {
+    rectCurve = false;
+  }
   else if (key === "u" || key === "U") {
     rectCurve = true;
   }
   else if ((key === "w" || key === "W") && rectHeight > 5) {
     rectHeight -= 5;
   }
-  else if ((key === "s" || key === "S") && rectHeight < 100) {
+  else if ((key === "s" || key === "S") && rectHeight < 200) {
     rectHeight += 5;
   }
   else if ((key === "a" || key === "A") && rectWidth > 5) {
     rectWidth -= 5;
   }
-  else if ((key === "d" || key === "D") && rectWidth < 100) {
+  else if ((key === "d" || key === "D") && rectWidth < 200) {
     rectWidth += 5;
   }
   else if (keyCode === LEFT_ARROW){
