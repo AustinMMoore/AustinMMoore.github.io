@@ -55,6 +55,22 @@ function draw() {
     xPosition += xVelocity;
     yPosition += yVelocity;
   }
+  else if (keyCode === LEFT_ARROW){
+    xVelocity *= 0.9;
+    xVelocity = constrain(xVelocity, -10, 10);
+  }
+  else if (keyCode === RIGHT_ARROW){
+    xVelocity *= 1.1;
+    xVelocity = constrain(xVelocity, -10, 10);
+  }
+  else if (keyCode === UP_ARROW){
+    yVelocity *= 1.1;
+    yVelocity = constrain(yVelocity, -10, 10);
+  }
+  else if (keyCode === DOWN_ARROW){
+    yVelocity *= 0.9;
+    yVelocity = constrain(yVelocity, -10, 10);
+  }
 }
 
 function keyPressed() {
@@ -101,18 +117,6 @@ function keyPressed() {
   else if ((key === "d" || key === "D") && rectWidth < 200) {
     rectWidth += 5;
   }
-  else if (keyCode === LEFT_ARROW){
-    xVelocity *= 0.9;
-  }
-  else if (keyCode === RIGHT_ARROW){
-    xVelocity *= 1.1;
-  }
-  else if (keyCode === UP_ARROW){
-    yVelocity *= 1.1;
-  }
-  else if (keyCode === DOWN_ARROW){
-    yVelocity *= 0.9;
-  }
 }
 
 function mouseWheel(event) {
@@ -120,4 +124,8 @@ function mouseWheel(event) {
   rectColourG = random(0, 255);
   rectColourB = random(0, 255);
   rectRainbow = false;
+}
+
+function keyReleased() {
+  key = "noPress";
 }
