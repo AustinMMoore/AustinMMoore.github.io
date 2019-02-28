@@ -30,7 +30,12 @@ let rectRainbow = false;
 let rectCurve = false;
 let rectMaxSize = 200;
 let rectMinSize = 5;
-let rectMaxSpeed = 2;
+let rectMaxSpeed = 40;
+let rectMinSpeed = -40;
+let xVelocityIncreasing = false;
+let yVelocityIncreasing = false;
+let xVelocityDecreasing = false;
+let yVelocityDecreasing = false;
 
 function draw() {
   fill(rectColourR, rectColourG, rectColourB);
@@ -55,21 +60,21 @@ function draw() {
     xPosition += xVelocity;
     yPosition += yVelocity;
   }
-  else if (keyCode === LEFT_ARROW){
+  if (xVelocityDecreasing){
     xVelocity *= 0.9;
-    xVelocity = constrain(xVelocity, -10, 10);
+    xVelocity = constrain(xVelocity, rectMinSpeed, rectMaxSpeed);
   }
-  else if (keyCode === RIGHT_ARROW){
+  if (xVelocityIncreasing){
     xVelocity *= 1.1;
-    xVelocity = constrain(xVelocity, -10, 10);
+    xVelocity = constrain(xVelocity, rectMinSpeed, rectMaxSpeed);
   }
-  else if (keyCode === UP_ARROW){
+  if (yVelocityIncreasing){
     yVelocity *= 1.1;
-    yVelocity = constrain(yVelocity, -10, 10);
+    yVelocity = constrain(yVelocity, rectMinSpeed, rectMaxSpeed);
   }
-  else if (keyCode === DOWN_ARROW){
+  if (yVelocityDecreasing){
     yVelocity *= 0.9;
-    yVelocity = constrain(yVelocity, -10, 10);
+    yVelocity = constrain(yVelocity, rectMinSpeed, rectMaxSpeed);
   }
 }
 
@@ -93,29 +98,41 @@ function keyPressed() {
     rectColourB = 255;
     rectRainbow = false;
   }
-  else if (key === " ") {
+  if (key === " ") {
     rectRainbow = true;
   }
-  else if (key === "c" || key === "C") {
+  if (key === "c" || key === "C") {
     background(255);
   }
-  else if (key === "n" || key === "N") {
+  if (key === "n" || key === "N") {
     rectCurve = false;
   }
-  else if (key === "u" || key === "U") {
+  if (key === "u" || key === "U") {
     rectCurve = true;
   }
-  else if ((key === "w" || key === "W") && rectHeight > 5) {
+  if ((key === "w" || key === "W") && rectHeight > rectMinSize) {
     rectHeight -= 5;
   }
-  else if ((key === "s" || key === "S") && rectHeight < 200) {
+  if ((key === "s" || key === "S") && rectHeight < rectMaxSize) {
     rectHeight += 5;
   }
-  else if ((key === "a" || key === "A") && rectWidth > 5) {
+  if ((key === "a" || key === "A") && rectWidth > rectMinSize) {
     rectWidth -= 5;
   }
-  else if ((key === "d" || key === "D") && rectWidth < 200) {
+  if ((key === "d" || key === "D") && rectWidth < rectMaxSize) {
     rectWidth += 5;
+  }
+  if (keyCode === LEFT_ARROW) {
+    xVelocityDecreasing = true;
+  }
+  if (keyCode === RIGHT_ARROW) {
+    xVelocityIncreasing = true;
+  }
+  if (keyCode === DOWN_ARROW) {
+    yVelocityDecreasing = true;
+  }
+  if (keyCode === UP_ARROW) {
+    yVelocityIncreasing = true;
   }
 }
 
@@ -127,5 +144,8 @@ function mouseWheel(event) {
 }
 
 function keyReleased() {
-  key = "noPress";
+  xVelocityIncreasing = false;
+  yVelocityIncreasing = false;
+  xVelocityDecreasing = false;
+  yVelocityDecreasing = false;
 }
