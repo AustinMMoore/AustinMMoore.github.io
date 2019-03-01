@@ -12,14 +12,12 @@ function setup() {
   background(255);
   xPosition = width/2;
   yPosition = height/2;
-  rectColourR = 255;
-  rectColourG = 255;
-  rectColourB = 255;
+  angleMode(RADIANS);
 }
 
-let rectColourR;
-let rectColourG;
-let rectColourB;
+let rectColourR = 255;
+let rectColourG = 255;
+let rectColourB = 255;
 let xPosition;
 let yPosition;
 let xVelocity = 2;
@@ -36,6 +34,7 @@ let xVelocityIncreasing = false;
 let yVelocityIncreasing = false;
 let xVelocityDecreasing = false;
 let yVelocityDecreasing = false;
+let rectWaveCounter = 0;
 
 function draw() {
   fill(rectColourR, rectColourG, rectColourB);
@@ -54,7 +53,9 @@ function draw() {
     rectColourB = random(0, 255);
   }
   if (rectCurve === true) {
-    xVelocity = yVelocity^2;
+    xVelocity = sin(rectWaveCounter);
+    yVelocity = sin(rectWaveCounter);
+    rectWaveCounter += TWO_PI;
   }
   if (rectCurve === false) {
     xPosition += xVelocity;
@@ -76,6 +77,8 @@ function draw() {
     yVelocity *= 0.9;
     yVelocity = constrain(yVelocity, rectMinSpeed, rectMaxSpeed);
   }
+  console.log(yVelocity);
+  console.log(xVelocity);
 }
 
 function keyPressed() {
@@ -106,6 +109,8 @@ function keyPressed() {
   }
   if (key === "n" || key === "N") {
     rectCurve = false;
+    xVelocity = 2;
+    yVelocity = 2;
   }
   if (key === "u" || key === "U") {
     rectCurve = true;
