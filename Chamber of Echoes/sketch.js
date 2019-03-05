@@ -12,6 +12,8 @@ function setup() {
 
 let cardXPosition = 0;
 let cardYPosition = 0;
+let cardWidth = 10;
+let cardHeight = 40;
 
 function draw() {
   background(255);
@@ -19,7 +21,12 @@ function draw() {
 }
 
 function cardMovement() {
-  if () {
-
+  if (mouseX >= cardXPosition && mouseX <= cardXPosition + cardWidth && mouseY >= cardYPosition && mouseY <= cardYPosition + cardHeight) {
+    cardXPosition = mouseX + cardWidth/2;
+    cardYPosition = mouseY + cardHeight/2;
   }
+}
+
+function mouseClicked() {
+  cardMovement();
 }
