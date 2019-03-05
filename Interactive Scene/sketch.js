@@ -7,6 +7,7 @@
 // - Integrated mouse wheel input into code
 // - Used updating text to update present values
 // - Sketch works when users resize their window and refresh
+// - Used the Sin function to create wave-like patterns of movement
 
 //Canvas setup and centering of the rectangle
 function setup() {
