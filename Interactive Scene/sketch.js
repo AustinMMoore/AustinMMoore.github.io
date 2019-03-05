@@ -207,6 +207,7 @@ function rainbowMode() {
 // Function that causes the rectangle to make a waving pattern as it travels (somewhat)
 function fireworkMode() {
   if (modeFirework === true) {
+    modeInsanity = false;
     xRectWaveCounter = 4 * sin(xRectBaseCounter);
     yRectWaveCounter = 4 * sin(yRectBaseCounter);
     xRectBaseCounter ++;
@@ -248,7 +249,8 @@ function speedChange() {
 
 //Function that causes the rectangle to wander around the canvas in somewhat random patterns
 function insanityMode() {
-  if(modeInsanity === true){
+  if (modeInsanity === true) {
+    modeFirework = false;
     xVelocity = xVelocity + sin(yPosition%360);
     yVelocity = yVelocity + sin(xPosition%360);
     xVelocity *= 0.9;
