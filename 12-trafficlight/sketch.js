@@ -32,8 +32,9 @@ function convertSeconds() {
 }
 
 function lightCycleDuration() {
-  if (secondsPassed > cycleDuration)
+  if (secondsPassed > cycleDuration) {
     cycleDuration
+  }
 }
 
 function drawOutlineOfLights() {
