@@ -12,69 +12,69 @@ let xVelocity = 5;
 let yPosition = 75;
 let yVelocity = 5;
 let gameState = "menu";
-let buttonWidth = 240;
+let buttonWidth = 200;
 let buttonHeight = 150;
+let color;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  rectMode(CENTER);
+  color = 255;
 }
 
 function draw() {
   background(220);
   drawButton();
-  if (buttonIsPressed) {
+  if (gameState === "game") {
+    rectMode(CORNER);
     bounceAround();
     drawRectangle();
   }
-  
 }
 
 function bounceAround() {
-  if (gameState === "game") {
-    if (xPosition >= width - rectWidth) {
-      xVelocity *= -1;
-      xPosition = width - rectWidth;
-    }
-    if (xPosition <= 0) {
-      xVelocity *= -1;
-      xPosition = 0;
-    }
-    if (yPosition >= height - rectHeight) {
-      yVelocity *= -1;
-      yPosition = height - rectHeight;
-    }
-    if (yPosition <= 0) {
-      yVelocity *= -1;
-      yPosition = 0;
-    }
+
+  if (xPosition >= width - rectWidth) {
+    xVelocity *= -1;
+    xPosition = width - rectWidth;
+  }
+  if (xPosition <= 0) {
+    xVelocity *= -1;
+    xPosition = 0;
+  }
+  if (yPosition >= height - rectHeight) {
+    yVelocity *= -1;
+    yPosition = height - rectHeight;
+  }
+  if (yPosition <= 0) {
+    yVelocity *= -1;
+    yPosition = 0;
   }
 }
 
 function drawRectangle() {
-  if (gameState === "game") {
-    stroke(0);
-    fill(0);
-    xPosition += xVelocity;
-    yPosition += yVelocity;
-    rect(xPosition, yPosition, rectWidth, rectHeight);
-  }
+  stroke(0);
+  fill(0);
+  xPosition += xVelocity;
+  yPosition += yVelocity;
+  rect(xPosition, yPosition, rectWidth, rectHeight);
 }
 
 function drawButton() {
-  rectMode(CENTER);
-  if (buttonIsPressed) {
-    fill(0);
-    rect(width/2, height/2, buttonWidth, buttonHeight);
+  if (mouseX <= width/2 + buttonWidth/2 && mouseX >= width/2 - buttonWidth/2 && mouseY >= height/2 - buttonHeight / 2 && mouseY <= height/2 + buttonHeight / 2) {
+    color = 200;
   }
   else {
-    fill(255);
+    color = 255;
   }
-  
+  if (gameState === "menu") {
+    fill(color);
+    rect(width/2, height/2, buttonWidth, buttonHeight);
+  }
 }
 
-function buttonIsPressed() {
-  return mouseX >= buttonWidth/2 - 75 &&
-         mouseX <= buttonWidth/2 + 75 &&
-         mouseY >= buttonHeight/2 + 75 &&
-         mouseY <= buttonHeight/2 + 75;
+function mouseClicked() {
+  if (mouseX <= width/2 + buttonWidth/2 && mouseX >= width/2 - buttonWidth/2 && mouseY >= height/2 - buttonHeight / 2 && mouseY <= height/2 + buttonHeight / 2) {
+    gameState = "game";
+  }
 }
