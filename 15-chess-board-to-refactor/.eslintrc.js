@@ -442,9 +442,6 @@ module.exports = {
       "VIDEO": true,
       "AUDIO": true,
       "createCapture": true,
-      "createElement": true,
-      "console": true,
-      "x": true,
-      "y": true,
+      "createElement": true
   },
 }

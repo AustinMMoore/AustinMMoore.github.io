@@ -24,12 +24,16 @@ let cardScalar = 1;
 
 function draw() {
   background(220);
-  drawButton();
+  if (gameState === "menu") {
+    drawPlayButton();
+  }
   if (gameState === "game") {
     rectMode(CORNER);
     drawCard();
     cardMovement();
+    zoomOnCard();
   }
+  console.log(cardScalar);
 }
 
 function cardMovement() {
@@ -48,7 +52,7 @@ function drawCard() {
   rect(cardXPosition, cardYPosition, cardWidth * cardScalar, cardHeight * cardScalar);
 }
 
-function drawButton() {
+function drawPlayButton() {
   if (mouseX <= width / 2 + playButtonWidth/2 && 
       mouseX >= width / 2 - playButtonWidth/2 && 
       mouseY >= height / 2 - playButtonHeight / 2 - 100 && 
@@ -77,7 +81,18 @@ function zoomOnCard() {
   if (mouseX >= cardXPosition && 
     mouseX <= cardXPosition + cardWidth &&
     mouseY >= cardYPosition && 
-    mouseY <= cardYPosition + cardHeight & mouseIsPressed) {
+    mouseY <= cardYPosition + cardHeight &&
+    !mouseIsPressed ) {
     cardScalar = 3;
+  }
+  else {
+    cardScalar = 1;
+  }
+}
+
+class Rectangle {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
   }
 }
