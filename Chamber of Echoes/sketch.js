@@ -90,9 +90,25 @@ function zoomOnCard() {
   }
 }
 
-class Rectangle {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
+class Card {
+  constructor(cardXPosition, cardYPosition, cardHeight, cardWidth) {
+    this.height = cardHeight;
+    this.width = cardWidth;
+    this.x = 200;
+    this.y = 300;
+    this.scalar = cardScalar;
+  }
+
+  zoomIn() {
+    if (mouseX >= this.x && 
+      mouseX <= this.x + this.width &&
+      mouseY >= this.y && 
+      mouseY <= this.y + this.height &&
+      !mouseIsPressed ) {
+      this.scalar = 3;
+    }
+    else {
+      this.scalar = 1;
+    }
   }
 }
