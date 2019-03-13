@@ -9,6 +9,7 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
+  let card1 = new Card();
 }
 
 let cardXPosition = 10;
@@ -29,28 +30,28 @@ function draw() {
   }
   if (gameState === "game") {
     rectMode(CORNER);
-    drawCard();
-    cardMovement();
-    zoomOnCard();
-  }
-  console.log(cardScalar);
-}
-
-function cardMovement() {
-  if (mouseX >= cardXPosition && 
-      mouseX <= cardXPosition + cardWidth &&
-      mouseY >= cardYPosition && 
-      mouseY <= cardYPosition + cardHeight & mouseIsPressed) {
-    cardXPosition = mouseX - cardWidth / 2;
-    cardYPosition = mouseY - cardHeight / 2;
-    cardDragging = true;
+    card1.drawCard();
+    // drawCard();
+    // cardMovement();
+    // zoomOnCard();
   }
 }
 
-function drawCard() {
-  fill(100);
-  rect(cardXPosition, cardYPosition, cardWidth * cardScalar, cardHeight * cardScalar);
-}
+// function cardMovement() {
+//   if (mouseX >= cardXPosition && 
+//       mouseX <= cardXPosition + cardWidth &&
+//       mouseY >= cardYPosition && 
+//       mouseY <= cardYPosition + cardHeight & mouseIsPressed) {
+//     cardXPosition = mouseX - cardWidth / 2;
+//     cardYPosition = mouseY - cardHeight / 2;
+//     cardDragging = true;
+//   }
+// }
+
+// function drawCard() {
+//   fill(100);
+//   rect(cardXPosition, cardYPosition, cardWidth * cardScalar, cardHeight * cardScalar);
+// }
 
 function drawPlayButton() {
   if (mouseX <= width / 2 + playButtonWidth/2 && 
@@ -77,18 +78,18 @@ function mouseClicked() {
   }
 }
 
-function zoomOnCard() {
-  if (mouseX >= cardXPosition && 
-    mouseX <= cardXPosition + cardWidth &&
-    mouseY >= cardYPosition && 
-    mouseY <= cardYPosition + cardHeight &&
-    !mouseIsPressed ) {
-    cardScalar = 3;
-  }
-  else {
-    cardScalar = 1;
-  }
-}
+// function zoomOnCard() {
+//   if (mouseX >= cardXPosition && 
+//     mouseX <= cardXPosition + cardWidth &&
+//     mouseY >= cardYPosition && 
+//     mouseY <= cardYPosition + cardHeight &&
+//     !mouseIsPressed ) {
+//     cardScalar = 3;
+//   }
+//   else {
+//     cardScalar = 1;
+//   }
+// }
 
 class Card {
   constructor(cardXPosition, cardYPosition, cardHeight, cardWidth) {
@@ -109,6 +110,22 @@ class Card {
     }
     else {
       this.scalar = 1;
+    }
+  }
+
+  drawCard() {
+    fill(100);
+    rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+  }
+
+  moveCard() {
+    if (mouseX >= this.x && 
+        mouseX <= this.x + this.width &&
+        mouseY >= this.y && 
+        mouseY <= this.y + this.height & mouseIsPressed) {
+      this.x = mouseX - this.width / 2;
+      this.y = mouseY - this.height / 2;
+      this.dragging = true;
     }
   }
 }
