@@ -9,19 +9,18 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
-  let card1 = new Card();
 }
 
 let cardXPosition = 10;
 let cardYPosition = 10;
 let cardWidth = 100;
 let cardHeight = 160;
-let cardDragging = false;
 let gameState = "menu";
 let playButtonHeight = 200;
 let playButtonWidth = 300;
 let buttonColour;
 let cardScalar = 1;
+let card1, card2, card3, card4, card5, card6, card7;
 
 function draw() {
   background(220);
@@ -29,8 +28,15 @@ function draw() {
     drawPlayButton();
   }
   if (gameState === "game") {
-    rectMode(CORNER);
-    card1.drawCard();
+
+    card1.behavior();
+    card2.behavior();
+    card3.behavior();
+    card4.behavior();
+    card5.behavior();
+    card6.behavior();
+    card7.behavior();
+
     // drawCard();
     // cardMovement();
     // zoomOnCard();
@@ -92,21 +98,21 @@ function mouseClicked() {
 // }
 
 class Card {
-  constructor(cardXPosition, cardYPosition, cardHeight, cardWidth) {
+  constructor(x, y) {
     this.height = cardHeight;
     this.width = cardWidth;
-    this.x = 200;
-    this.y = 300;
+    this.x = x;
+    this.y = y;
     this.scalar = cardScalar;
   }
 
   zoomIn() {
-    if (mouseX >= this.x && 
-      mouseX <= this.x + this.width &&
-      mouseY >= this.y && 
-      mouseY <= this.y + this.height &&
+    if (mouseX >= this.x - this.width / 2 && 
+      mouseX <= this.x + this.width / 2 &&
+      mouseY >= this.y - this.height / 2 && 
+      mouseY <= this.y + this.height / 2 &&
       !mouseIsPressed ) {
-      this.scalar = 3;
+      this.scalar = 2;
     }
     else {
       this.scalar = 1;
@@ -119,13 +125,27 @@ class Card {
   }
 
   moveCard() {
-    if (mouseX >= this.x && 
-        mouseX <= this.x + this.width &&
-        mouseY >= this.y && 
-        mouseY <= this.y + this.height & mouseIsPressed) {
-      this.x = mouseX - this.width / 2;
-      this.y = mouseY - this.height / 2;
-      this.dragging = true;
+    if (mouseX >= this.x - this.width / 2 && 
+        mouseX <= this.x + this.width / 2 &&
+        mouseY >= this.y - this.height / 2 && 
+        mouseY <= this.y + this.height / 2 && 
+        mouseIsPressed) {
+      this.x = mouseX;
+      this.y = mouseY;
     }
   }
+
+  behavior() {
+    this.zoomIn();
+    this.drawCard();
+    this.moveCard();
+  }
 }
+
+card1 = new Card(50, 50);
+card2 = new Card(200, 50);
+card3 = new Card(350, 50);
+card4 = new Card(500, 50);
+card5 = new Card(650, 50);
+card6 = new Card(800, 50);
+card7 = new Card(950, 50);
