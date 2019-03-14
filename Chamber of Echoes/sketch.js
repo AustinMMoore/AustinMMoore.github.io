@@ -21,11 +21,14 @@ let playButtonWidth = 300;
 let buttonColour;
 let cardScalar = 1;
 let card1, card2, card3, card4, card5, card6, card7;
+let playButton;
 
 function draw() {
   background(220);
   if (gameState === "menu") {
-    drawPlayButton();
+    // showPlayButton();
+    playButton.show();
+    if (check)
   }
   if (gameState === "game") {
 
@@ -37,7 +40,7 @@ function draw() {
     card6.behavior();
     card7.behavior();
 
-    // drawCard();
+    // showCard();
     // cardMovement();
     // zoomOnCard();
   }
@@ -54,35 +57,35 @@ function draw() {
 //   }
 // }
 
-// function drawCard() {
+// function showCard() {
 //   fill(100);
 //   rect(cardXPosition, cardYPosition, cardWidth * cardScalar, cardHeight * cardScalar);
 // }
 
-function drawPlayButton() {
-  if (mouseX <= width / 2 + playButtonWidth/2 && 
-      mouseX >= width / 2 - playButtonWidth/2 && 
-      mouseY >= height / 2 - playButtonHeight / 2 - 100 && 
-      mouseY <= height / 2 + playButtonHeight / 2 - 100 ) {
-    buttonColour = 200;
-  }
-  else {
-    buttonColour = 255;
-  }
-  if (gameState === "menu") {
-    fill(buttonColour);
-    rect(width / 2, height / 2 - 100, playButtonWidth, playButtonHeight);
-  }
-}
+// function showPlayButton() {
+//   if (mouseX <= width / 2 + playButtonWidth/2 && 
+//       mouseX >= width / 2 - playButtonWidth/2 && 
+//       mouseY >= height / 2 - playButtonHeight / 2 - 100 && 
+//       mouseY <= height / 2 + playButtonHeight / 2 - 100 ) {
+//     buttonColour = 200;
+//   }
+//   else {
+//     buttonColour = 255;
+//   }
+//   if (gameState === "menu") {
+//     fill(buttonColour);
+//     rect(width/2, height/2 - 100, playButtonWidth, playButtonHeight);
+//   }
+// }
 
-function mouseClicked() {
-  if (mouseX <= width / 2 + playButtonWidth / 2 && 
-      mouseX >= width / 2 - playButtonWidth / 2 && 
-      mouseY >= height / 2 - playButtonHeight / 2 - 100 && 
-      mouseY <= height / 2 + playButtonHeight / 2 - 100 ) {
-    gameState = "game";
-  }
-}
+// function mouseClicked() {
+//   if (mouseX <= width/2 + playButtonWidth/2 && 
+//       mouseX >= width/2 - playButtonWidth/2 && 
+//       mouseY >= height/2 - playButtonHeight/2 - 100 && 
+//       mouseY <= height/2 + playButtonHeight/2 - 100 ) {
+//     gameState = "game";
+//   }
+// }
 
 // function zoomOnCard() {
 //   if (mouseX >= cardXPosition && 
@@ -107,10 +110,10 @@ class Card {
   }
 
   zoomIn() {
-    if (mouseX >= this.x - this.width / 2 && 
-      mouseX <= this.x + this.width / 2 &&
-      mouseY >= this.y - this.height / 2 && 
-      mouseY <= this.y + this.height / 2 &&
+    if (mouseX >= this.x - this.width/2 && 
+      mouseX <= this.x + this.width/2 &&
+      mouseY >= this.y - this.height/2 && 
+      mouseY <= this.y + this.height/2 &&
       !mouseIsPressed ) {
       this.scalar = 2;
     }
@@ -119,16 +122,16 @@ class Card {
     }
   }
 
-  drawCard() {
+  showCard() {
     fill(100);
     rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
   }
 
   moveCard() {
-    if (mouseX >= this.x - this.width / 2 && 
-        mouseX <= this.x + this.width / 2 &&
-        mouseY >= this.y - this.height / 2 && 
-        mouseY <= this.y + this.height / 2 && 
+    if (mouseX >= this.x - this.width/2 && 
+        mouseX <= this.x + this.width/2 &&
+        mouseY >= this.y - this.height/2 && 
+        mouseY <= this.y + this.height/2 && 
         mouseIsPressed) {
       this.x = mouseX;
       this.y = mouseY;
@@ -137,15 +140,43 @@ class Card {
 
   behavior() {
     this.zoomIn();
-    this.drawCard();
+    this.showCard();
     this.moveCard();
   }
 }
 
-card1 = new Card(50, 50);
-card2 = new Card(200, 50);
-card3 = new Card(350, 50);
-card4 = new Card(500, 50);
-card5 = new Card(650, 50);
-card6 = new Card(800, 50);
-card7 = new Card(950, 50);
+card1 = new Card(100, 100);
+card2 = new Card(250, 100);
+card3 = new Card(400, 100);
+card4 = new Card(550, 100);
+card5 = new Card(700, 100);
+card6 = new Card(850, 100);
+card7 = new Card(1000, 100);
+
+class Button {
+  constructor(x, y, width, height, text) {
+    this.height = height;
+    this.width = width;
+    this.x = x;
+    this.y = y;
+    text(text, x, y);
+  }
+
+  show() {
+    fill(0);
+    rect(x, y, width, height);
+  }
+
+  checkIfSelected() {
+    return mouseX >= this.x - this.width/2 && 
+           mouseX <= this.x + this.width/2 &&
+           mouseY >= this.y - this.height/2 && 
+           mouseY <= this.y + this.height/2;
+  }
+
+  checkIfSelected() {
+    return checkIfSelected && mouseIsPressed
+  }
+}
+
+playButton = new Button(width/2, height/2, 300, 200, "PLAY");
