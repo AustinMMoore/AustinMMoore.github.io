@@ -9,6 +9,7 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
+  playButton = new Button(width/2, width/2, 300, 200, "PLAY");
 }
 
 let cardXPosition = 10;
@@ -28,7 +29,9 @@ function draw() {
   if (gameState === "menu") {
     // showPlayButton();
     playButton.show();
-    if (check)
+    if (playButton.checkIfclicked()) {
+      gameState = "game";
+    }
   }
   if (gameState === "game") {
 
@@ -159,12 +162,16 @@ class Button {
     this.width = width;
     this.x = x;
     this.y = y;
-    text(text, x, y);
+    this.buttonText = text;
   }
 
   show() {
-    fill(0);
-    rect(x, y, width, height);
+    fill(255);
+    rect(this.x, this.y, this.width, this.height);
+    text(this.buttonText, this.x, this.y);
+    if (this.checkIfSelected) {
+      fill(0);
+    }
   }
 
   checkIfSelected() {
@@ -174,9 +181,7 @@ class Button {
            mouseY <= this.y + this.height/2;
   }
 
-  checkIfSelected() {
-    return checkIfSelected && mouseIsPressed
+  checkIfclicked() {
+    return this.checkIfSelected() && mouseIsPressed;
   }
 }
-
-playButton = new Button(width/2, height/2, 300, 200, "PLAY");
