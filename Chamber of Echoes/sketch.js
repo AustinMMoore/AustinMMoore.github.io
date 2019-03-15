@@ -9,14 +9,15 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
-  textAlign(CENTER)
+  textAlign(CENTER);
 
   playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
-  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30)
-  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30)
-  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30)
-  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30)
-  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30)
+  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
+  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30);
+  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
+  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
+  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
+  backPlayButton = new Button(width* (19/20), height * (1/10), 150, 150, "Back", 30);
 
   card1 = new Card(width * (1/15), height * (5/6));
   card2 = new Card(width * (2/15), height * (5/6));
@@ -36,8 +37,9 @@ let soundMute = false;
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
+
 let card1, card2, card3, card4, card5, card6, card7;
-let playButton, optionsButton;
+let playButton, optionsButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
 function draw() {
   background(backgroundColour);
@@ -52,19 +54,18 @@ function draw() {
     }
   }
   if (gameState === "game") {
-    card1.behavior();
-    card2.behavior();
-    card3.behavior();
-    card4.behavior();
-    card5.behavior();
-    card6.behavior();
-    card7.behavior();
+    cardBehavior();
+    backPlayButton.show();
+    if (backPlayButton.isClicked()) {
+      gameState = "menu";
+    }
   }
   if (gameState === "options") {
     lightOptionButton.show();
     darkOptionButton.show();
     soundOptionButton.show();
     backOptionButton.show();
+
     if (darkOptionButton.isClicked()) {
       backgroundColour = "grey";
     }
@@ -75,9 +76,19 @@ function draw() {
       soundMute = true;
     }
     if (backOptionButton.isClicked()) {
-      gameState = "menu"
+      gameState = "menu";
     }
   }
+}
+
+function cardBehavior() {
+  card1.behavior();
+  card2.behavior();
+  card3.behavior();
+  card4.behavior();
+  card5.behavior();
+  card6.behavior();
+  card7.behavior();
 }
 
 class Card {
@@ -107,6 +118,10 @@ class Card {
     rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
   }
 
+  isDragging() {
+    if (mouseIsPressed)
+  }
+
   moveCard() {
     if (mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2 && mouseIsPressed) {
       this.x = mouseX;
@@ -128,7 +143,7 @@ class Button {
     this.x = x;
     this.y = y;
     this.buttonText = text;
-    this.buttonTextSize = textSize
+    this.buttonTextSize = textSize;
   }
 
   isSelected() {
