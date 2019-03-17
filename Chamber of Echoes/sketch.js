@@ -10,6 +10,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+  cardClassSetup();
 }
 
 let cardWidth = 100;
@@ -25,31 +26,11 @@ let textColour = "black";
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
-function buttonClassSetup() {
-  playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
-  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
-  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30);
-  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30);
-  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
-  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
-  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
-  backPlayButton = new Button(width* (19/20), height * (1/10), 150, 150, "Back", 30);
-}
 
-function cardClassSetup() {
-  card1 = new Card(width * (1/15), height * (5/6));
-  card2 = new Card(width * (2/15), height * (5/6));
-  card3 = new Card(width * (3/15), height * (5/6));
-  card4 = new Card(width * (4/15), height * (5/6));
-  card5 = new Card(width * (5/15), height * (5/6));
-  card6 = new Card(width * (6/15), height * (5/6));
-  card7 = new Card(width * (7/15), height * (5/6));
-}
 
 function draw() {
   background(backgroundColour);
   buttonClassSetup();
-  cardClassSetup();
   if (gameState === "menu") {
     playButton.show();
     optionsButton.show();
@@ -106,6 +87,27 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
+function buttonClassSetup() {
+  playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
+  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
+  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30);
+  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30);
+  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
+  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
+  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
+  backPlayButton = new Button(width* (19/20), height * (1/10), 150, 150, "Back", 30);
+}
+
+function cardClassSetup() {
+  card1 = new Card(width * (1/15), height * (5/6));
+  card2 = new Card(width * (2/15), height * (5/6));
+  card3 = new Card(width * (3/15), height * (5/6));
+  card4 = new Card(width * (4/15), height * (5/6));
+  card5 = new Card(width * (5/15), height * (5/6));
+  card6 = new Card(width * (6/15), height * (5/6));
+  card7 = new Card(width * (7/15), height * (5/6));
+}
+
 class Card {
   constructor(x, y) {
     this.height = cardHeight;
@@ -116,11 +118,7 @@ class Card {
   }
 
   zoomIn() {
-    if (mouseX >= this.x - this.width/2 && 
-      mouseX <= this.x + this.width/2 &&
-      mouseY >= this.y - this.height/2 && 
-      mouseY <= this.y + this.height/2 &&
-      !mouseIsPressed ) {
+    if (this.isSelected() && !mouseIsPressed) {
       this.scalar = 2;
     }
     else {
@@ -140,9 +138,17 @@ class Card {
     }
   }
 
+  isSelected() {
+    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
+  }
+
+  isClicked() {
+    return this.isSelected() && mouseIsPressed;
+  }
+
   behavior() {
     this.moveCard();
-    // this.zoomIn();
+    this.zoomIn();
     this.showCard();
   }
 }
