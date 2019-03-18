@@ -10,6 +10,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+  cardClassSetup();
 }
 
 let cardWidth = 100;
@@ -17,6 +18,7 @@ let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
+let cardIsDragging = false;
 let soundMute = false;
 let backgroundColour = "white";
 let buttonColour = "grey";
@@ -49,7 +51,6 @@ function cardClassSetup() {
 function draw() {
   background(backgroundColour);
   buttonClassSetup();
-  cardClassSetup();
   if (gameState === "menu") {
     playButton.show();
     optionsButton.show();
@@ -66,6 +67,7 @@ function draw() {
   }
   if (gameState === "game") {
     cardBehavior();
+    console.log(card1.x);
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
       gameState = "menu";
@@ -113,6 +115,7 @@ class Card {
     this.x = x;
     this.y = y;
     this.scalar = cardScalar;
+    this.isDragging = false;
   }
 
   zoomIn() {
@@ -134,15 +137,27 @@ class Card {
   }
 
   moveCard() {
-    if (mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2 && mouseIsPressed) {
+    if (this.isClicked() && !cardIsDragging) {
+      cardIsDragging = true;
       this.x = mouseX;
       this.y = mouseY;
     }
+    else {
+      cardIsDragging = false;
+    }
+  }
+
+  isSelected() {
+    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
+  }
+
+  isClicked() {
+    return this.isSelected() && mouseIsPressed;
   }
 
   behavior() {
     this.moveCard();
-    // this.zoomIn();
+    this.zoomIn();
     this.showCard();
   }
 }
