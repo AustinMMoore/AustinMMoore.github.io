@@ -10,7 +10,12 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+  imageMode(CENTER);
   cardClassSetup();
+}
+
+function preload() {
+  cardWhite = loadImage("assets/cardwhite.png");
 }
 
 let cardWidth = 100;
@@ -23,6 +28,8 @@ let soundMute = false;
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
+
+let cardWhite;
 
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
@@ -50,6 +57,7 @@ function cardClassSetup() {
 
 function draw() {
   background(backgroundColour);
+  image(cardWhite, 150, 150, 150, 150);
   buttonClassSetup();
   if (gameState === "menu") {
     playButton.show();
