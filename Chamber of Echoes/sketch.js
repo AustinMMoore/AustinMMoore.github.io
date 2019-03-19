@@ -6,10 +6,6 @@
 // - Full use of class system in buttons and cards
 
 
-function preload() {
-  greenCard = loadImage('assets/COEcards-4.png')
-}
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
@@ -17,10 +13,8 @@ function setup() {
   cardClassSetup();
 }
 
-let greenCard;
-
 let cardWidth = 100;
-let cardHeight = 150;
+let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
