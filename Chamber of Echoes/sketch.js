@@ -10,7 +10,16 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+<<<<<<< HEAD
   cardClassSetup();
+=======
+  imageMode(CENTER);
+  cardClassSetup();
+}
+
+function preload() {
+  cardWhite = loadImage("assets/cardwhite.png");
+>>>>>>> 89b0040ea840e0b1ea132e84c360b944f68c6c1c
 }
 
 let cardWidth = 100;
@@ -18,10 +27,13 @@ let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
+let cardIsDragging = false;
 let soundMute = false;
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
+
+let cardWhite;
 
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
@@ -30,6 +42,7 @@ let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, 
 
 function draw() {
   background(backgroundColour);
+  image(cardWhite, 150, 150, 150, 150);
   buttonClassSetup();
   if (gameState === "menu") {
     playButton.show();
@@ -47,6 +60,7 @@ function draw() {
   }
   if (gameState === "game") {
     cardBehavior();
+    console.log(card1.x);
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
       gameState = "menu";
@@ -115,6 +129,7 @@ class Card {
     this.x = x;
     this.y = y;
     this.scalar = cardScalar;
+    this.isDragging = false;
   }
 
   zoomIn() {
@@ -132,10 +147,22 @@ class Card {
   }
 
   moveCard() {
-    if (mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2 && mouseIsPressed) {
+    if (this.isClicked() && !cardIsDragging) {
+      cardIsDragging = true;
       this.x = mouseX;
       this.y = mouseY;
     }
+    else {
+      cardIsDragging = false;
+    }
+  }
+
+  isSelected() {
+    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
+  }
+
+  isClicked() {
+    return this.isSelected() && mouseIsPressed;
   }
 
   isSelected() {
