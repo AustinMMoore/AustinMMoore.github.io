@@ -6,6 +6,10 @@
 // - Full use of class system in buttons and cards
 
 
+function preload() {
+  whiteCard = loadImage("assets/whitecard.png");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
@@ -24,7 +28,7 @@ let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
 
-let cardWhite;
+let whiteCard;
 
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
@@ -33,7 +37,7 @@ let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, 
 
 function draw() {
   background(backgroundColour);
-  // image(cardWhite, 150, 150, 150, 150);
+  image(whiteCard, 150, 150, 100, 150);
   buttonClassSetup();
   if (gameState === "menu") {
     playButton.show();
@@ -150,14 +154,6 @@ class Card {
 
   isSelected() {
     return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
-  }
-
-  isClicked() {
-    return this.isSelected() && mouseIsPressed;
-  }
-
-  isSelected() {
-    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
   }
 
   isClicked() {
