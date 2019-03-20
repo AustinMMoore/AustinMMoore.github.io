@@ -8,12 +8,17 @@
 
 function preload() {
   whiteCard = loadImage("assets/whitecard.png");
+  blueCard = loadImage("assets/bluecard.png");
+  greenCard = loadImage("assets/greencard.png");
+  redCard = loadImage("assets/redcard.png");
+  yellowCard = loadImage("assets/yellowcard.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+  imageMode(CENTER);
   cardClassSetup();
 }
 
@@ -28,16 +33,13 @@ let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
 
-let whiteCard;
+let whiteCard, blueCard, greenCard, redCard, yellowCard;
 
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
-
-
 function draw() {
   background(backgroundColour);
-  image(whiteCard, 150, 150, 100, 150);
   buttonClassSetup();
   if (gameState === "menu") {
     playButton.show();
@@ -55,7 +57,6 @@ function draw() {
   }
   if (gameState === "game") {
     cardBehavior();
-    console.log(card1.x);
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
       gameState = "menu";
@@ -123,7 +124,7 @@ class Card {
     this.width = cardWidth;
     this.x = x;
     this.y = y;
-    this.cardType = "white"
+    this.cardType = "white";
     this.scalar = cardScalar;
     this.isDragging = false;
   }
@@ -139,8 +140,10 @@ class Card {
 
   showCard() {
     fill(100);
-    image("assets" + card.cardType + "Card")
-    rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    if(this.cardType === "white"){
+      image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    }
+    //rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
   }
 
   moveCard() {
