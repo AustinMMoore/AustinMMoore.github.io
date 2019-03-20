@@ -105,7 +105,7 @@ function buttonClassSetup() {
   lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
   soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
   backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
-  backPlayButton = new Button(width* (19/20), height * (1/10), 150, 150, "Back", 30);
+  backPlayButton = new Button(windowWidth - this.width, this.height, 150, 150, "Back", 30);
 }
 
 function cardClassSetup() {
