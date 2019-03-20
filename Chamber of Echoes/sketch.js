@@ -123,6 +123,7 @@ class Card {
     this.width = cardWidth;
     this.x = x;
     this.y = y;
+    this.cardType = "white"
     this.scalar = cardScalar;
     this.isDragging = false;
   }
@@ -138,6 +139,7 @@ class Card {
 
   showCard() {
     fill(100);
+    image("assets" + card.cardType + "Card")
     rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
   }
 
