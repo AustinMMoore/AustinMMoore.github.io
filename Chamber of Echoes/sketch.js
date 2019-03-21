@@ -8,7 +8,7 @@
 
 function preload() {
   whiteCard = loadImage("assets/whitecard.png");
-  blueCard = loadImage("assets/bluecard.png");
+  blueCard = loadImage("assets/bluecard2.png");
   greenCard = loadImage("assets/greencard.png");
   redCard = loadImage("assets/redcard.png");
   yellowCard = loadImage("assets/yellowcard.png");
@@ -29,6 +29,7 @@ let buttonTextSize;
 let cardScalar = 1;
 let cardIsDragging = false;
 let soundMute = false;
+let cardColourList = ["white", "blue", "green", "red", "yellow"];
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
@@ -118,15 +119,20 @@ function cardClassSetup() {
   card7 = new Card(width * (7/15), height * (5/6));
 }
 
+function mouseWheel() {
+  
+}
+
 class Card {
   constructor(x, y) {
     this.height = cardHeight;
     this.width = cardWidth;
     this.x = x;
     this.y = y;
-    this.cardType = "white";
+    this.cardType = cardColourList[random(0,4)];
     this.scalar = cardScalar;
     this.isDragging = false;
+    this.cardColour = cardColourList[0];
   }
 
   zoomIn() {
