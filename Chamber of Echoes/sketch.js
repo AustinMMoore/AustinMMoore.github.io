@@ -139,9 +139,21 @@ class Card {
   }
 
   showCard() {
-    fill(100);
-    if(this.cardType === "white"){
+    //fill(100);
+    if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    }
+    if (this.cardtype === "blue") {
+      image(blueCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    if (this.cardtype === "green") {
+      image(greenCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    if (this.cardtype === "red") {
+      image(redCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    if (this.cardtype === "yellow") {
+      image(yellowCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
     }
     //rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
   }
