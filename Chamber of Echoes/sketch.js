@@ -8,7 +8,7 @@
 
 function preload() {
   whiteCard = loadImage("assets/whitecard.png");
-  blueCard = loadImage("assets/bluecard2.png");
+  blueCard = loadImage("assets/bluecard.png");
   greenCard = loadImage("assets/greencard.png");
   redCard = loadImage("assets/redcard.png");
   yellowCard = loadImage("assets/yellowcard.png");
@@ -27,7 +27,7 @@ let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
-let cardIsDragging = false;
+let draggingCardID;
 let soundMute = false;
 let cardColourList = ["white", "blue", "green", "red", "yellow"];
 let backgroundColour = "white";
@@ -110,29 +110,50 @@ function buttonClassSetup() {
 }
 
 function cardClassSetup() {
-  card1 = new Card(width * (1/15), height * (5/6));
-  card2 = new Card(width * (2/15), height * (5/6));
-  card3 = new Card(width * (3/15), height * (5/6));
-  card4 = new Card(width * (4/15), height * (5/6));
-  card5 = new Card(width * (5/15), height * (5/6));
-  card6 = new Card(width * (6/15), height * (5/6));
-  card7 = new Card(width * (7/15), height * (5/6));
+  card1 = new Card(width * (1/15), height * (5/6), 1);
+  card2 = new Card(width * (2/15), height * (5/6), 2);
+  card3 = new Card(width * (3/15), height * (5/6), 3);
+  card4 = new Card(width * (4/15), height * (5/6), 4);
+  card5 = new Card(width * (5/15), height * (5/6), 5);
+  card6 = new Card(width * (6/15), height * (5/6), 6);
+  card7 = new Card(width * (7/15), height * (5/6), 7);
 }
 
-function mouseWheel() {
-  
-}
+// function mousePressed() {
+//   if (card1.isSelected()) {
+//     draggingCardID = 1;
+//   }
+//   if (card2.isSelected()) {
+//     draggingCardID = 2;
+//   }
+//   if (card3.isSelected()) {
+//     draggingCardID = 3;
+//   }
+//   if (card4.isSelected()) {
+//     draggingCardID = 4;
+//   }
+//   if (card5.isSelected()) {
+//     draggingCardID = 5;
+//   }
+//   if (card6.isSelected()) {
+//     draggingCardID = 6;
+//   }
+//   if (card7.isSelected()) {
+//     draggingCardID = 7;
+//   }
+//   console.log(draggingCardID);
+// }
 
 class Card {
-  constructor(x, y) {
+  constructor(x, y, cardID) {
     this.height = cardHeight;
     this.width = cardWidth;
     this.x = x;
     this.y = y;
-    this.cardType = cardColourList[random(0,4)];
+    this.cardType = cardColourList[floor(random(5))];
     this.scalar = cardScalar;
     this.isDragging = false;
-    this.cardColour = cardColourList[0];
+    this.cardID = cardID;
   }
 
   zoomIn() {
@@ -145,33 +166,35 @@ class Card {
   }
 
   showCard() {
-    //fill(100);
+    fill(100);
     if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
     }
-    if (this.cardtype === "blue") {
+    else if (this.cardType === "blue") {
       image(blueCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
     }
-    if (this.cardtype === "green") {
+    else if (this.cardType === "green") {
       image(greenCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
     }
-    if (this.cardtype === "red") {
+    else if (this.cardType === "red") {
       image(redCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
     }
-    if (this.cardtype === "yellow") {
+    else if (this.cardType === "yellow") {
       image(yellowCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
     }
-    //rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    else {
+      rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    }
   }
 
   moveCard() {
-    if (this.isClicked() && !cardIsDragging) {
-      cardIsDragging = true;
+    //console.log(draggingCardID);
+    if (this.isClicked() && draggingCardID === this.cardID) {
       this.x = mouseX;
       this.y = mouseY;
     }
     else {
-      cardIsDragging = false;
+      draggingCardID = 0;
     }
   }
 
@@ -180,6 +203,7 @@ class Card {
   }
 
   isClicked() {
+    draggingCardID = this.cardType;
     return this.isSelected() && mouseIsPressed;
   }
 
