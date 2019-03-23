@@ -8,12 +8,17 @@
 
 function preload() {
   whiteCard = loadImage("assets/whitecard.png");
+  blueCard = loadImage("assets/bluecard.png");
+  greenCard = loadImage("assets/greencard.png");
+  redCard = loadImage("assets/redcard.png");
+  yellowCard = loadImage("assets/yellowcard.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
+  imageMode(CENTER);
   cardClassSetup();
 }
 
@@ -22,22 +27,20 @@ let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
-let cardIsDragging = false;
+let draggingCardID;
 let soundMute = false;
+let cardColourList = ["white", "blue", "green", "red", "yellow"];
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
 
-let whiteCard;
+let whiteCard, blueCard, greenCard, redCard, yellowCard;
 
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
-
-
 function draw() {
   background(backgroundColour);
-  image(whiteCard, 150, 150, 100, 150);
   buttonClassSetup();
   if (gameState === "menu") {
     playButton.show();
@@ -55,7 +58,6 @@ function draw() {
   }
   if (gameState === "game") {
     cardBehavior();
-    console.log(card1.x);
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
       gameState = "menu";
@@ -104,28 +106,54 @@ function buttonClassSetup() {
   lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
   soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
   backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
-  backPlayButton = new Button(width* (19/20), height * (1/10), 150, 150, "Back", 30);
+  backPlayButton = new Button(windowWidth - this.width, this.height, 150, 150, "Back", 30);
 }
 
 function cardClassSetup() {
-  card1 = new Card(width * (1/15), height * (5/6));
-  card2 = new Card(width * (2/15), height * (5/6));
-  card3 = new Card(width * (3/15), height * (5/6));
-  card4 = new Card(width * (4/15), height * (5/6));
-  card5 = new Card(width * (5/15), height * (5/6));
-  card6 = new Card(width * (6/15), height * (5/6));
-  card7 = new Card(width * (7/15), height * (5/6));
+  card1 = new Card(width * (1/15), height * (5/6), 1);
+  card2 = new Card(width * (2/15), height * (5/6), 2);
+  card3 = new Card(width * (3/15), height * (5/6), 3);
+  card4 = new Card(width * (4/15), height * (5/6), 4);
+  card5 = new Card(width * (5/15), height * (5/6), 5);
+  card6 = new Card(width * (6/15), height * (5/6), 6);
+  card7 = new Card(width * (7/15), height * (5/6), 7);
 }
 
+// function mousePressed() {
+//   if (card1.isSelected()) {
+//     draggingCardID = 1;
+//   }
+//   if (card2.isSelected()) {
+//     draggingCardID = 2;
+//   }
+//   if (card3.isSelected()) {
+//     draggingCardID = 3;
+//   }
+//   if (card4.isSelected()) {
+//     draggingCardID = 4;
+//   }
+//   if (card5.isSelected()) {
+//     draggingCardID = 5;
+//   }
+//   if (card6.isSelected()) {
+//     draggingCardID = 6;
+//   }
+//   if (card7.isSelected()) {
+//     draggingCardID = 7;
+//   }
+//   console.log(draggingCardID);
+// }
+
 class Card {
-  constructor(x, y) {
+  constructor(x, y, cardID) {
     this.height = cardHeight;
     this.width = cardWidth;
     this.x = x;
     this.y = y;
-    this.cardType = "white"
+    this.cardType = cardColourList[floor(random(5))];
     this.scalar = cardScalar;
     this.isDragging = false;
+    this.cardID = cardID;
   }
 
   zoomIn() {
@@ -139,18 +167,34 @@ class Card {
 
   showCard() {
     fill(100);
-    image("assets" + card.cardType + "Card")
-    rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    if (this.cardType === "white"){
+      image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    }
+    else if (this.cardType === "blue") {
+      image(blueCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    else if (this.cardType === "green") {
+      image(greenCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    else if (this.cardType === "red") {
+      image(redCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    else if (this.cardType === "yellow") {
+      image(yellowCard, this.x, this.y, this.width * this.scalar, this. height * this.scalar);
+    }
+    else {
+      rect(this.x, this.y, this.width * this.scalar, this.height * this.scalar);
+    }
   }
 
   moveCard() {
-    if (this.isClicked() && !cardIsDragging) {
-      cardIsDragging = true;
+    //console.log(draggingCardID);
+    if (this.isClicked() && draggingCardID === this.cardID) {
       this.x = mouseX;
       this.y = mouseY;
     }
     else {
-      cardIsDragging = false;
+      draggingCardID = 0;
     }
   }
 
@@ -159,6 +203,7 @@ class Card {
   }
 
   isClicked() {
+    draggingCardID = this.cardType;
     return this.isSelected() && mouseIsPressed;
   }
 
