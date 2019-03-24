@@ -5,13 +5,20 @@
 // Extra for Experts:
 // - Full use of class system in buttons and cards
 
-
 function preload() {
+  soundFormats("mp3","wav");
+  backgroundMusic = loadSound("assets/backgroundMusic.mp3");
+  buttonClick = loadSound("assets/buttonClick.mp3");
+  cardPickUp = loadSound("assets/cardPickUp.mp3");
+  cardDraw = loadSound("assets/cardDraw.mp3");
+  deckShuffle = loadSound("assets/deckShuffle.mp3");
+
   whiteCard = loadImage("assets/whitecard.png");
   blueCard = loadImage("assets/bluecard.png");
   greenCard = loadImage("assets/greencard.png");
   redCard = loadImage("assets/redcard.png");
   yellowCard = loadImage("assets/yellowcard.png");
+
 }
 
 function setup() {
@@ -20,6 +27,12 @@ function setup() {
   textAlign(CENTER);
   imageMode(CENTER);
   cardClassSetup();
+  backgroundMusic.setVolume(0.05);
+  buttonClick.setVolume(0.5);
+  cardPickUp.setVolume(0.05);
+  cardDraw.setVolume(0.05);
+  deckShuffle.setVolume(0.5);
+  buttonClick.play();
 }
 
 let cardWidth = 100;
@@ -27,12 +40,16 @@ let cardHeight = 160;
 let gameState = "menu";
 let buttonTextSize;
 let cardScalar = 1;
+let cardInHand = false;
 let draggingCardID;
 let soundMute = false;
+let newCardType;
+let colourChange = false;
 let cardColourList = ["white", "blue", "green", "red", "yellow"];
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
+let mouseisClicked = false;
 
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 
@@ -76,7 +93,8 @@ function draw() {
       backgroundColour = "white";
     }
     if (soundOptionButton.isClicked()) {
-      soundMute = true;
+      soundMute = !soundMute;
+      console.log(soundMute);
     }
     if (backOptionButton.isClicked()) {
       gameState = "menu";
@@ -119,30 +137,38 @@ function cardClassSetup() {
   card7 = new Card(width * (7/15), height * (5/6), 7);
 }
 
-// function mousePressed() {
-//   if (card1.isSelected()) {
-//     draggingCardID = 1;
-//   }
-//   if (card2.isSelected()) {
-//     draggingCardID = 2;
-//   }
-//   if (card3.isSelected()) {
-//     draggingCardID = 3;
-//   }
-//   if (card4.isSelected()) {
-//     draggingCardID = 4;
-//   }
-//   if (card5.isSelected()) {
-//     draggingCardID = 5;
-//   }
-//   if (card6.isSelected()) {
-//     draggingCardID = 6;
-//   }
-//   if (card7.isSelected()) {
-//     draggingCardID = 7;
-//   }
-//   console.log(draggingCardID);
-// }
+function mouseReleased() {
+  cardInHand = false;
+  draggingCardID = 0;
+  mouseisClicked = false;
+}
+
+function mouseClicked() {
+  mouseisClicked = true;
+}
+
+function keyPressed() {
+  if (key === "1") {
+    newCardType = cardColourList[0];
+    colourChange = true;
+  }
+  if (key === "2") {
+    newCardType = cardColourList[1];
+    colourChange = true;
+  }
+  if (key === "3") {
+    newCardType = cardColourList[2];
+    colourChange = true;
+  }
+  if (key === "4") {
+    newCardType = cardColourList[3];
+    colourChange = true;
+  }
+  if (key === "5") {
+    newCardType = cardColourList[4];
+    colourChange = true;
+  }
+}
 
 class Card {
   constructor(x, y, cardID) {
@@ -152,8 +178,8 @@ class Card {
     this.y = y;
     this.cardType = cardColourList[floor(random(5))];
     this.scalar = cardScalar;
-    this.isDragging = false;
     this.cardID = cardID;
+    this.newCardType = this.cardType;
   }
 
   zoomIn() {
@@ -167,6 +193,11 @@ class Card {
 
   showCard() {
     fill(100);
+    if (cardInHand && draggingCardID === this.cardID && colourChange) {
+      this.cardType = newCardType;
+      colourChange = false;
+      console.log(newCardType);
+    }
     if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
     }
@@ -188,13 +219,14 @@ class Card {
   }
 
   moveCard() {
-    //console.log(draggingCardID);
-    if (this.isClicked() && draggingCardID === this.cardID) {
+    if (this.isClicked() && !cardInHand) {
+      cardInHand = true;
+      draggingCardID = this.cardID;
+    }
+    if (cardInHand && draggingCardID === this.cardID) {
       this.x = mouseX;
       this.y = mouseY;
-    }
-    else {
-      draggingCardID = 0;
+      // newCardType = this.cardType;
     }
   }
 
@@ -203,7 +235,6 @@ class Card {
   }
 
   isClicked() {
-    draggingCardID = this.cardType;
     return this.isSelected() && mouseIsPressed;
   }
 
@@ -244,6 +275,9 @@ class Button {
       if (backgroundColour === "grey") {
         buttonColour = "white";
       }
+    }
+    if (this.isClicked() && !mouseisClicked) {
+      buttonClick.play();
     }
     fill(buttonColour);
     rect(this.x, this.y, this.width, this.height);
