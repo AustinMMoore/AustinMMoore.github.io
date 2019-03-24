@@ -26,6 +26,11 @@ function setup() {
   rectMode(CENTER);
   textAlign(CENTER);
   imageMode(CENTER);
+  backgroundMusic.playMode("restart");
+  buttonClick.playMode("restart");
+  cardPickUp.playMode("restart");
+  cardDraw.playMode("restart");
+  deckShuffle.playMode("restart");
   cardClassSetup();
   backgroundMusic.setVolume(0.05);
   buttonClick.setVolume(0.5);
@@ -49,7 +54,7 @@ let cardColourList = ["white", "blue", "green", "red", "yellow"];
 let backgroundColour = "white";
 let buttonColour = "grey";
 let textColour = "black";
-let mouseisClicked = false;
+let playingSound = false;
 
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 
@@ -59,6 +64,7 @@ let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, 
 function draw() {
   background(backgroundColour);
   buttonClassSetup();
+  //console.log(mouseisClicked);
   if (gameState === "menu") {
     playButton.show();
     optionsButton.show();
@@ -140,11 +146,6 @@ function cardClassSetup() {
 function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
-  mouseisClicked = false;
-}
-
-function mouseClicked() {
-  mouseisClicked = true;
 }
 
 function keyPressed() {
@@ -196,7 +197,6 @@ class Card {
     if (cardInHand && draggingCardID === this.cardID && colourChange) {
       this.cardType = newCardType;
       colourChange = false;
-      console.log(newCardType);
     }
     if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
@@ -226,7 +226,6 @@ class Card {
     if (cardInHand && draggingCardID === this.cardID) {
       this.x = mouseX;
       this.y = mouseY;
-      // newCardType = this.cardType;
     }
   }
 
@@ -276,8 +275,10 @@ class Button {
         buttonColour = "white";
       }
     }
-    if (this.isClicked() && !mouseisClicked) {
+    if (this.isClicked() && !playingSound) {
+      playingSound = true;
       buttonClick.play();
+      playingSound = false;
     }
     fill(buttonColour);
     rect(this.x, this.y, this.width, this.height);
