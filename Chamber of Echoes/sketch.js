@@ -4,6 +4,7 @@
 //
 // Extra for Experts:
 // - Full use of class system in buttons and cards
+// - Used array to choose card colour randomly
 
 function preload() {
   soundFormats("mp3","wav");
@@ -32,12 +33,13 @@ function setup() {
   cardDraw.playMode("restart");
   deckShuffle.playMode("restart");
   cardClassSetup();
-  backgroundMusic.setVolume(0.05);
+  backgroundMusic.setVolume(0.5);
   buttonClick.setVolume(0.5);
   cardPickUp.setVolume(0.05);
   cardDraw.setVolume(0.05);
   deckShuffle.setVolume(0.5);
-  buttonClick.play();
+  // buttonClick.play();
+  backgroundMusic.play();
 }
 
 let cardWidth = 100;
@@ -51,13 +53,13 @@ let soundMute = false;
 let newCardType;
 let colourChange = false;
 let cardColourList = ["white", "blue", "green", "red", "yellow"];
-let backgroundColour = "white";
+let backgroundColour = "grey";
 let buttonColour = "grey";
 let textColour = "black";
 let playingSound = false;
 
+let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
-
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
@@ -130,7 +132,7 @@ function buttonClassSetup() {
   lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
   soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
   backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
-  backPlayButton = new Button(windowWidth - this.width, this.height, 150, 150, "Back", 30);
+  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30);
 }
 
 function cardClassSetup() {
