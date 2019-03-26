@@ -66,6 +66,8 @@ let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
+let heavyAttack, lightAttack;
+
 //main draw loop of the code
 function draw() {
   checkMute();
@@ -167,6 +169,11 @@ function cardClassSetup() {
   card5 = new Card(width * (5/15), height * (5/6), 5);
   card6 = new Card(width * (6/15), height * (5/6), 6);
   card7 = new Card(width * (7/15), height * (5/6), 7);
+}
+
+function cardStatSetup() {
+  heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", this.cardDamage(10));
+  lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", this.cardDamage(5));
 }
 
 //checks when the mouse is released
@@ -349,8 +356,40 @@ class Button {
     return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
   }
 
-   //function that returns if it is clicked
+  //function that returns if it is clicked
   isClicked() {
     return this.isSelected() && mouseIsPressed;
   }
+}
+
+class CardInfo {
+
+  constructor(colour, cost, name, text, rarity, effectOne, effectTwo, effectThree) {
+    this.cardColour = colour;
+    this.cardCost = cost;
+    this.cardName = name;
+    this.cardText = text;
+    this.cardRarity = rarity;
+    this.cardEffectOne = effectOne;
+    this.cardEffectTwo = effectTwo;
+    this.cardEffectThree = effectThree;
+  }
+
+  cardDamage(damageValue) {
+
+  }
+
+}
+
+class Monster {
+
+  constructor(name, health, gold, attackOne, attackTwo, attackThree) {
+    this.monsterName = name;
+    this.monsterHealth = health;
+    this.monsterGold = gold;
+    this.monsterAttackOne = attackOne;
+    this.monsterAttackTwo = attackTwo;
+    this.monsterAttackThree = attackThree;
+  }
+  
 }
