@@ -11,17 +11,21 @@
 //Preloads the sound (mp3) and image (png) files used
 function preload() {
   soundFormats("mp3");
-  backgroundMusic = loadSound("assets/backgroundMusic.mp3");
-  buttonClick = loadSound("assets/buttonClick.mp3");
-  cardPickUp = loadSound("assets/cardPickUp.mp3");
-  cardDraw = loadSound("assets/cardDraw.mp3");
-  deckShuffle = loadSound("assets/deckShuffle.mp3");
+  backgroundMusic = loadSound("assets/sounds/backgroundMusic.mp3");
+  buttonClick = loadSound("assets/sounds/buttonClick.mp3");
+  cardPickUp = loadSound("assets/sounds/cardPickUp.mp3");
+  cardDraw = loadSound("assets/sounds/cardDraw.mp3");
+  deckShuffle = loadSound("assets/sounds/deckShuffle.mp3");
 
-  whiteCard = loadImage("assets/whitecard.png");
-  blueCard = loadImage("assets/bluecard.png");
-  greenCard = loadImage("assets/greencard.png");
-  redCard = loadImage("assets/redcard.png");
-  yellowCard = loadImage("assets/yellowcard.png");
+  whiteCard = loadImage("assets/cards/whitecard.png");
+  blueCard = loadImage("assets/cards/bluecard.png");
+  greenCard = loadImage("assets/cards/greencard.png");
+  redCard = loadImage("assets/cards/redcard.png");
+  yellowCard = loadImage("assets/cards/yellowcard.png");
+
+  chomperMonsterImage = loadImage("assets/monsters/chomper");
+  blueBeanMonsterImage = loadImage("assets/monsters/blueBean");
+  spikySlimeMonsterImage = loadImage("assets/monsters/spikySlime");
 }
 
 //sets up the canvas, center modes (rect, text, image), playmodes for sounds, and runs the setup for the cards
@@ -65,6 +69,8 @@ let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
+let chomperMonster, blueBeanMonster, spikySlimeMonster;
+let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage];
 
 let heavyAttack, lightAttack;
 
@@ -174,6 +180,12 @@ function cardClassSetup() {
 function cardStatSetup() {
   heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", this.cardDamage(10));
   lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", this.cardDamage(5));
+}
+
+function monsterSetup() {
+  chomperMonster = new Monster("Chomper", 0, 25, 55, "Bite", "Consume", "Defend");
+  blueBeanMonster = new Monster("Blue Bean", 1, 20, 50, "Slap", "Smack", "Defend");
+  spikySlimeMonster = new Monster("Spiky Slime", 2, 60, 60, "Slap", "SpikeUp", "Defend");
 }
 
 //checks when the mouse is released
@@ -383,13 +395,18 @@ class CardInfo {
 
 class Monster {
 
-  constructor(name, health, gold, attackOne, attackTwo, attackThree) {
+  constructor(name, imageNumber, health, gold, attackOne, attackTwo, attackThree) {
     this.monsterName = name;
+    this.monsterImage = monsterSpriteList[imageNumber];
     this.monsterHealth = health;
     this.monsterGold = gold;
     this.monsterAttackOne = attackOne;
     this.monsterAttackTwo = attackTwo;
     this.monsterAttackThree = attackThree;
+    this.whichMonster = random(1, 2, 3);
   }
   
+  showMonster() {
+    image(this.monsterImage, 100, 100);
+  }
 }
