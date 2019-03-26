@@ -70,6 +70,7 @@ let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 let chomperMonster, blueBeanMonster, spikySlimeMonster;
+let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage;
 let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage];
 
 let heavyAttack, lightAttack;
