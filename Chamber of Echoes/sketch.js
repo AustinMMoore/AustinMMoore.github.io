@@ -5,9 +5,12 @@
 // Extra for Experts:
 // - Full use of class system in buttons and cards
 // - Used array to choose card colour randomly
+// - Sound implemented (background music and button click)
 
+
+//Preloads the sound (mp3) and image (png) files used
 function preload() {
-  soundFormats("mp3","wav");
+  soundFormats("mp3");
   backgroundMusic = loadSound("assets/backgroundMusic.mp3");
   buttonClick = loadSound("assets/buttonClick.mp3");
   cardPickUp = loadSound("assets/cardPickUp.mp3");
@@ -19,54 +22,62 @@ function preload() {
   greenCard = loadImage("assets/greencard.png");
   redCard = loadImage("assets/redcard.png");
   yellowCard = loadImage("assets/yellowcard.png");
-
 }
 
+//sets up the canvas, center modes (rect, text, image), playmodes for sounds, and runs the setup for the cards
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
   imageMode(CENTER);
-  backgroundMusic.playMode("restart");
+  backgroundMusic.playMode("sustain");
   buttonClick.playMode("restart");
   cardPickUp.playMode("restart");
   cardDraw.playMode("restart");
   deckShuffle.playMode("restart");
+  backgroundMusic.loop();
   cardClassSetup();
-  backgroundMusic.setVolume(0.5);
-  buttonClick.setVolume(0.5);
-  cardPickUp.setVolume(0.05);
-  cardDraw.setVolume(0.05);
-  deckShuffle.setVolume(0.5);
-  // buttonClick.play();
-  backgroundMusic.play();
 }
 
+//setup all the variables
 let cardWidth = 100;
 let cardHeight = 160;
-let gameState = "menu";
-let buttonTextSize;
 let cardScalar = 1;
 let cardInHand = false;
 let draggingCardID;
-let soundMute = false;
 let newCardType;
-let colourChange = false;
-let cardColourList = ["white", "blue", "green", "red", "yellow"];
-let backgroundColour = "grey";
-let buttonColour = "grey";
-let textColour = "black";
+
+let gameState = "menu";
+let buttonTextSize;
+
+let soundMute = false;
+let soundVolume = 0.5;
 let playingSound = false;
+let muteButtonReady = true;
+
+let colourChange = false;
+let backgroundColour = "grey";
+let buttonColour = "white";
+let textColour = "black";
+let cardColourList = ["white", "blue", "green", "red", "yellow"];
 
 let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
+//main draw loop of the code
 function draw() {
+  checkMute();
   background(backgroundColour);
   buttonClassSetup();
-  //console.log(mouseisClicked);
+  displayMenu();
+  displayGame();
+  displayOptions();
+}
+
+//shows the main menu screen where you can go to the Game, Options, or Quit (Check Console XD)
+function displayMenu() {
   if (gameState === "menu") {
     playButton.show();
     optionsButton.show();
@@ -78,9 +89,14 @@ function draw() {
       gameState = "options";
     }
     if (quitButton.isClicked()) {
+      console.log("You'll never escape me!");
       // window.close();
     }
   }
+}
+
+//shows the card game (where for now cards can be dragged around individually)
+function displayGame() {
   if (gameState === "game") {
     cardBehavior();
     backPlayButton.show();
@@ -88,6 +104,10 @@ function draw() {
       gameState = "menu";
     }
   }
+}
+
+//shows the extra settings including the two themes and mute sound
+function displayOptions() {
   if (gameState === "options") {
     lightOptionButton.show();
     darkOptionButton.show();
@@ -100,9 +120,9 @@ function draw() {
     if (lightOptionButton.isClicked()) {
       backgroundColour = "white";
     }
-    if (soundOptionButton.isClicked()) {
+    if (soundOptionButton.isClicked() && muteButtonReady) {
       soundMute = !soundMute;
-      console.log(soundMute);
+      muteButtonReady = false;
     }
     if (backOptionButton.isClicked()) {
       gameState = "menu";
@@ -110,6 +130,7 @@ function draw() {
   }
 }
 
+//the main function to call each card's behavior
 function cardBehavior() {
   card1.behavior();
   card2.behavior();
@@ -120,10 +141,12 @@ function cardBehavior() {
   card7.behavior();
 }
 
+//checks if the user ever resizes the window and changes the scaling
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
+//sets up the buttons used throughout the code in their according classes
 function buttonClassSetup() {
   playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
   optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
@@ -135,6 +158,7 @@ function buttonClassSetup() {
   backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30);
 }
 
+//sets up the cards used in the game as separate entities
 function cardClassSetup() {
   card1 = new Card(width * (1/15), height * (5/6), 1);
   card2 = new Card(width * (2/15), height * (5/6), 2);
@@ -145,11 +169,33 @@ function cardClassSetup() {
   card7 = new Card(width * (7/15), height * (5/6), 7);
 }
 
+//checks when the mouse is released
 function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
+  muteButtonReady = true;
 }
 
+//checks if the game is or is not sound muted
+function checkMute() {
+  if (soundMute && muteButtonReady) {
+    soundVolume = 0;
+    backgroundMusic.pause();
+  }
+  else {
+    soundVolume = 0.5;
+    if (!backgroundMusic.isLooping()) {
+      backgroundMusic.loop();
+    }
+  }
+  backgroundMusic.setVolume(soundVolume);
+  buttonClick.setVolume(soundVolume);
+  cardPickUp.setVolume(soundVolume);
+  cardDraw.setVolume(soundVolume);
+  deckShuffle.setVolume(soundVolume);
+}
+
+//changes the suit of the card by using "1, 2, 3, 4, 5" while dragging the card
 function keyPressed() {
   if (key === "1") {
     newCardType = cardColourList[0];
@@ -173,7 +219,10 @@ function keyPressed() {
   }
 }
 
+//defines the class used for the card's behavior
 class Card {
+
+  //sets up the initial values of the card's variables
   constructor(x, y, cardID) {
     this.height = cardHeight;
     this.width = cardWidth;
@@ -185,6 +234,7 @@ class Card {
     this.newCardType = this.cardType;
   }
 
+  //zooms in on the card when the mouse is hovering over it but not clicked
   zoomIn() {
     if (this.isSelected() && !mouseIsPressed) {
       this.scalar = 2;
@@ -194,6 +244,7 @@ class Card {
     }
   }
 
+  //displays the card in the correct suit, position, and size
   showCard() {
     fill(100);
     if (cardInHand && draggingCardID === this.cardID && colourChange) {
@@ -220,6 +271,7 @@ class Card {
     }
   }
 
+  //moves the card when it is dragged with the cursor (avoids creating stacks of cards)
   moveCard() {
     if (this.isClicked() && !cardInHand) {
       cardInHand = true;
@@ -231,14 +283,17 @@ class Card {
     }
   }
 
+  //funcion that returns if it is moused over and not clicked
   isSelected() {
     return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
   }
 
+  //function that returns if it is clicked
   isClicked() {
     return this.isSelected() && mouseIsPressed;
   }
 
+  //fucntion that calls all of the card's behaviors
   behavior() {
     this.moveCard();
     this.zoomIn();
@@ -246,7 +301,10 @@ class Card {
   }
 }
 
+//defines the class used for the button's behavior
 class Button {
+
+  //sets up the initial values of the button's variables
   constructor(x, y, width, height, text, textSize) {
     this.height = height;
     this.width = width;
@@ -256,10 +314,7 @@ class Button {
     this.buttonTextSize = textSize;
   }
 
-  isSelected() {
-    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
-  }
-
+  //displays the button with the correct colour, text, and size
   show() {
     if (this.isSelected()) {
       if (backgroundColour === "white") {
@@ -287,9 +342,14 @@ class Button {
     fill(textColour);
     textSize(this.buttonTextSize);
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
-    return this.buttonText;
+  }
+   
+  //funcion that returns if it is moused over and not clicked
+  isSelected() {
+    return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
   }
 
+   //function that returns if it is clicked
   isClicked() {
     return this.isSelected() && mouseIsPressed;
   }
