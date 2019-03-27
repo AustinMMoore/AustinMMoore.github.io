@@ -23,9 +23,9 @@ function preload() {
   redCard = loadImage("assets/cards/redcard.png");
   yellowCard = loadImage("assets/cards/yellowcard.png");
 
-  chomperMonsterImage = loadImage("assets/monsters/chomper");
-  blueBeanMonsterImage = loadImage("assets/monsters/blueBean");
-  spikySlimeMonsterImage = loadImage("assets/monsters/spikySlime");
+  chomperMonsterImage = loadImage("assets/monsters/chomper.png");
+  blueBeanMonsterImage = loadImage("assets/monsters/blueBean.png");
+  spikySlimeMonsterImage = loadImage("assets/monsters/spikySlime.png");
 }
 
 //sets up the canvas, center modes (rect, text, image), playmodes for sounds, and runs the setup for the cards
@@ -41,6 +41,7 @@ function setup() {
   deckShuffle.playMode("restart");
   backgroundMusic.loop();
   cardClassSetup();
+  monsterSetup();
 }
 
 //setup all the variables
@@ -69,9 +70,14 @@ let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
+
 let chomperMonster, blueBeanMonster, spikySlimeMonster;
 let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage;
 let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage];
+let monsterOne, monsterTwo, monsterThree;
+let monsterLocationOne = [1/3, 1/2];
+let monsterLocationTwo = [2/3, 1/2];
+let monsterLocationThree = [1/2, 1/4];
 
 let heavyAttack, lightAttack;
 
@@ -107,6 +113,7 @@ function displayMenu() {
 //shows the card game (where for now cards can be dragged around individually)
 function displayGame() {
   if (gameState === "game") {
+    spikySlimeMonster.showMonster();
     cardBehavior();
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
@@ -187,6 +194,9 @@ function monsterSetup() {
   chomperMonster = new Monster("Chomper", 0, 25, 55, "Bite", "Consume", "Defend");
   blueBeanMonster = new Monster("Blue Bean", 1, 20, 50, "Slap", "Smack", "Defend");
   spikySlimeMonster = new Monster("Spiky Slime", 2, 60, 60, "Slap", "SpikeUp", "Defend");
+  chomperMonster.monsterImage = chomperMonsterImage;
+  blueBeanMonster.monsterImage = blueBeanMonsterImage;
+  spikySlimeMonster.monsterImage = spikySlimeMonsterImage;
 }
 
 //checks when the mouse is released
@@ -194,6 +204,7 @@ function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
   muteButtonReady = true;
+  //console.log(mouseX + ", " + mouseY);
 }
 
 //checks if the game is or is not sound muted
@@ -398,16 +409,37 @@ class Monster {
 
   constructor(name, imageNumber, health, gold, attackOne, attackTwo, attackThree) {
     this.monsterName = name;
-    this.monsterImage = monsterSpriteList[imageNumber];
+    // this.monsterImage = monsterSpriteList[imageNumber];
     this.monsterHealth = health;
     this.monsterGold = gold;
     this.monsterAttackOne = attackOne;
     this.monsterAttackTwo = attackTwo;
     this.monsterAttackThree = attackThree;
-    this.whichMonster = random(1, 2, 3);
+    this.monsterNumber = floor(random(1, 3));
   }
   
+  spawnMonster() {
+    if (this.spawnedCount > 0) {
+      this.spawnedCount -= 1;
+    }
+  }
+
   showMonster() {
-    image(this.monsterImage, 100, 100);
+    if (this.monsterNumber === 1) {
+      this.xPosition = width * monsterLocationOne[0]; 
+      this.yPosition = height * monsterLocationOne[1];
+      image(this.monsterImage, this.xPosition, this.yPosition);
+    }
+    else if (this.monsterNumber === 2) {
+      this.xPosition = width * monsterLocationTwo[0]; 
+      this.yPosition = height * monsterLocationTwo[1];
+      image(this.monsterImage, this.xPosition, this.yPosition);
+    }
+    else if (this.monsterNumber === 3) {
+      this.xPosition = width * monsterLocationThree[0]; 
+      this.yPosition = height * monsterLocationThree[1];
+      image(this.monsterImage, this.xPosition, this.yPosition);
+    }
+    console.log(this.monsterNumber);
   }
 }
