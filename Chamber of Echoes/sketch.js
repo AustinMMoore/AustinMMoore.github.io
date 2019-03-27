@@ -75,9 +75,12 @@ let chomperMonster, blueBeanMonster, spikySlimeMonster;
 let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage;
 let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage];
 let monsterOne, monsterTwo, monsterThree;
+let monsterList = [chomperMonster, blueBeanMonster, spikySlimeMonster];
 let monsterLocationOne = [1/3, 1/2];
-let monsterLocationTwo = [2/3, 1/2];
-let monsterLocationThree = [1/2, 1/4];
+let monsterLocationTwo = [1/2, 1/4];
+let monsterLocationThree = [2/3, 1/2];
+let monsterLocationList = [monsterLocationOne, monsterLocationTwo, monsterLocationThree];
+let monstersSpawned = false;
 
 let heavyAttack, lightAttack;
 
@@ -415,12 +418,17 @@ class Monster {
     this.monsterAttackOne = attackOne;
     this.monsterAttackTwo = attackTwo;
     this.monsterAttackThree = attackThree;
-    this.monsterNumber = floor(random(1, 3));
+    this.monsterNumber = round(random(1, 3));
   }
   
-  spawnMonster() {
-    if (this.spawnedCount > 0) {
-      this.spawnedCount -= 1;
+  spawnMonsters(spawnNumber) {
+    if (!monstersSpawned) {
+      monstersSpawned = true;
+      for(spawnNumber; spawnNumber > 0; spawnNumber--) {
+        monsterList[0].monsterNumber = 1;
+        monsterList[1].monsterNumber = 1;
+        monsterList[2].monsterNumber = 1;
+      }
     }
   }
 
