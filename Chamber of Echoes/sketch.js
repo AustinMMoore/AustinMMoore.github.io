@@ -26,6 +26,8 @@ function preload() {
   chomperMonsterImage = loadImage("assets/monsters/chomper.png");
   blueBeanMonsterImage = loadImage("assets/monsters/blueBean.png");
   spikySlimeMonsterImage = loadImage("assets/monsters/spikySlime.png");
+  dizzyMonsterImage = loadImage("assets/monsters/dizzy.png");
+  fireDemonMonsterImage = loadImage("assets/monsters/fireDemon.png");
 }
 
 //sets up the canvas, center modes (rect, text, image), playmodes for sounds, and runs the setup for the cards
@@ -42,6 +44,7 @@ function setup() {
   backgroundMusic.loop();
   cardClassSetup();
   monsterSetup();
+  console.log(width * monsterLocationOne[0]);
 }
 
 //setup all the variables
@@ -71,11 +74,12 @@ let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let card1, card2, card3, card4, card5, card6, card7;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
-let chomperMonster, blueBeanMonster, spikySlimeMonster;
-let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage;
-let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage];
+let chomperMonster, blueBeanMonster, spikySlimeMonster, dizzyMonster, fireDemonMonster;
+let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage, dizzyMonsterImage, fireDemonMonsterImage;
+let monsterSpriteList = [chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage, dizzyMonsterImage, fireDemonMonsterImage];
 let monsterOne, monsterTwo, monsterThree;
-let monsterList = [chomperMonster, blueBeanMonster, spikySlimeMonster];
+let monsterList = [chomperMonster, blueBeanMonster, spikySlimeMonster, dizzyMonster, fireDemonMonster];
+
 let monsterLocationOne = [1/3, 1/2];
 let monsterLocationTwo = [1/2, 1/4];
 let monsterLocationThree = [2/3, 1/2];
@@ -116,7 +120,7 @@ function displayMenu() {
 //shows the card game (where for now cards can be dragged around individually)
 function displayGame() {
   if (gameState === "game") {
-    spikySlimeMonster.showMonster();
+    spawnMonsters(3);
     cardBehavior();
     backPlayButton.show();
     if (backPlayButton.isClicked()) {
@@ -196,10 +200,15 @@ function cardStatSetup() {
 function monsterSetup() {
   chomperMonster = new Monster("Chomper", 0, 25, 55, "Bite", "Consume", "Defend");
   blueBeanMonster = new Monster("Blue Bean", 1, 20, 50, "Slap", "Smack", "Defend");
-  spikySlimeMonster = new Monster("Spiky Slime", 2, 60, 60, "Slap", "SpikeUp", "Defend");
+  spikySlimeMonster = new Monster("Spiky Slime", 2, 30, 60, "Slap", "SpikeUp", "Defend");
+  dizzyMonster = new Monster("Dizzy", 3, 20, 45, "Hypnosis", "Smack", "Defend");
+  fireDemonMonster = new Monster("Fire Demon", 4, 25, 55, "Burn", "Smack", "Defend");
+
   chomperMonster.monsterImage = chomperMonsterImage;
   blueBeanMonster.monsterImage = blueBeanMonsterImage;
   spikySlimeMonster.monsterImage = spikySlimeMonsterImage;
+  dizzyMonster.monsterImage = dizzyMonsterImage;
+  fireDemonMonster.monsterImage = fireDemonMonsterImage;
 }
 
 //checks when the mouse is released
@@ -207,6 +216,7 @@ function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
   muteButtonReady = true;
+  monstersSpawned = false;
   //console.log(mouseX + ", " + mouseY);
 }
 
@@ -251,6 +261,83 @@ function keyPressed() {
     newCardType = cardColourList[4];
     colourChange = true;
   }
+}
+
+function spawnMonsters(spawnNumber) {
+  if (!monstersSpawned && spawnNumber >= 1 && spawnNumber <= 3) {
+    monstersSpawned = true;
+
+    //Monster One
+    monsterType = round(random(1, 5));
+    if (monsterType === 1) {
+      monsterOne = chomperMonster;
+    }
+    else if (monsterType === 2) {
+      monsterOne = blueBeanMonster;
+    }
+    else if (monsterType === 3) {
+      monsterOne = spikySlimeMonster;
+    }
+    else if (monsterType === 4) {
+      monsterOne = dizzyMonster;
+    }
+    else if (monsterType === 5) {
+      monsterOne = fireDemonMonster;
+    }
+
+    //Monster Two
+    monsterType = round(random(1, 3));
+    if (monsterType === 1) {
+      monsterTwo = chomperMonster;
+    }
+    else if (monsterType === 2) {
+      monsterTwo = blueBeanMonster;
+    }
+    else if (monsterType === 3) {
+      monsterTwo = spikySlimeMonster;
+    }
+    else if (monsterType === 4) {
+      monsterTwo = dizzyMonster;
+    }
+    else if (monsterType === 5) {
+      monsterTwo = fireDemonMonster;
+    }
+
+    //Monster Three
+    monsterType = round(random(1, 3));
+    if (monsterType === 1) {
+      monsterThree = chomperMonster;
+    }
+    else if (monsterType === 2) {
+      monsterThree = blueBeanMonster;
+    }
+    else if (monsterType === 3) {
+      monsterThree = spikySlimeMonster;
+    }
+    else if (monsterType === 4) {
+      monsterThree = dizzyMonster;
+    }
+    else if (monsterType === 5) {
+      monsterThree = fireDemonMonster;
+    }
+
+    //console.log(monsterOne, monsterTwo, monsterThree);
+  }
+
+  
+  monsterOne.xPosition = width * monsterLocationOne[0]; 
+  monsterOne.yPosition = height * monsterLocationOne[1];
+  image(monsterOne.monsterImage, monsterOne.xPosition, monsterOne.yPosition);
+
+  monsterTwo.xPosition = width * monsterLocationTwo[0]; 
+  monsterTwo.yPosition = height * monsterLocationTwo[1];
+  image(monsterTwo.monsterImage, monsterTwo.xPosition, monsterTwo.yPosition);
+
+  monsterThree.xPosition = width * monsterLocationThree[0]; 
+  monsterThree.yPosition = height * monsterLocationThree[1];
+  image(monsterThree.monsterImage, monsterThree.xPosition, monsterThree.yPosition);
+  
+  
 }
 
 //defines the class used for the card's behavior
@@ -412,42 +499,13 @@ class Monster {
 
   constructor(name, imageNumber, health, gold, attackOne, attackTwo, attackThree) {
     this.monsterName = name;
-    // this.monsterImage = monsterSpriteList[imageNumber];
+    this.monsterImage = monsterSpriteList[imageNumber];
     this.monsterHealth = health;
     this.monsterGold = gold;
     this.monsterAttackOne = attackOne;
     this.monsterAttackTwo = attackTwo;
     this.monsterAttackThree = attackThree;
-    this.monsterNumber = round(random(1, 3));
-  }
-  
-  spawnMonsters(spawnNumber) {
-    if (!monstersSpawned) {
-      monstersSpawned = true;
-      for(spawnNumber; spawnNumber > 0; spawnNumber--) {
-        monsterList[0].monsterNumber = 1;
-        monsterList[1].monsterNumber = 1;
-        monsterList[2].monsterNumber = 1;
-      }
-    }
-  }
-
-  showMonster() {
-    if (this.monsterNumber === 1) {
-      this.xPosition = width * monsterLocationOne[0]; 
-      this.yPosition = height * monsterLocationOne[1];
-      image(this.monsterImage, this.xPosition, this.yPosition);
-    }
-    else if (this.monsterNumber === 2) {
-      this.xPosition = width * monsterLocationTwo[0]; 
-      this.yPosition = height * monsterLocationTwo[1];
-      image(this.monsterImage, this.xPosition, this.yPosition);
-    }
-    else if (this.monsterNumber === 3) {
-      this.xPosition = width * monsterLocationThree[0]; 
-      this.yPosition = height * monsterLocationThree[1];
-      image(this.monsterImage, this.xPosition, this.yPosition);
-    }
-    console.log(this.monsterNumber);
+    this.xPosition = 0;
+    this.yPosition = 0;
   }
 }
