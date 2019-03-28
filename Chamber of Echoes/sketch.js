@@ -44,7 +44,6 @@ function setup() {
   backgroundMusic.loop();
   cardClassSetup();
   monsterSetup();
-  console.log(width * monsterLocationOne[0]);
 }
 
 //setup all the variables
@@ -71,7 +70,7 @@ let cardColourList = ["white", "blue", "green", "red", "yellow"];
 
 let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
-let card1, card2, card3, card4, card5, card6, card7;
+let cardLocationOne, cardLocationTwo, cardLocationThree, cardLocationFour, cardLocationFive, cardLocationSix, cardLocationSeven;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
 
 let chomperMonster, blueBeanMonster, spikySlimeMonster, dizzyMonster, fireDemonMonster;
@@ -85,6 +84,7 @@ let monsterLocationTwo = [1/2, 1/4];
 let monsterLocationThree = [2/3, 1/2];
 let monsterLocationList = [monsterLocationOne, monsterLocationTwo, monsterLocationThree];
 let monstersSpawned = false;
+let monsterType;
 
 let heavyAttack, lightAttack;
 
@@ -155,13 +155,13 @@ function displayOptions() {
 
 //the main function to call each card's behavior
 function cardBehavior() {
-  card1.behavior();
-  card2.behavior();
-  card3.behavior();
-  card4.behavior();
-  card5.behavior();
-  card6.behavior();
-  card7.behavior();
+  cardLocationOne.behavior();
+  cardLocationTwo.behavior();
+  cardLocationThree.behavior();
+  cardLocationFour.behavior();
+  cardLocationFive.behavior();
+  cardLocationSix.behavior();
+  cardLocationSeven.behavior();
 }
 
 //checks if the user ever resizes the window and changes the scaling
@@ -183,13 +183,13 @@ function buttonClassSetup() {
 
 //sets up the cards used in the game as separate entities
 function cardClassSetup() {
-  card1 = new Card(width * (1/15), height * (5/6), 1);
-  card2 = new Card(width * (2/15), height * (5/6), 2);
-  card3 = new Card(width * (3/15), height * (5/6), 3);
-  card4 = new Card(width * (4/15), height * (5/6), 4);
-  card5 = new Card(width * (5/15), height * (5/6), 5);
-  card6 = new Card(width * (6/15), height * (5/6), 6);
-  card7 = new Card(width * (7/15), height * (5/6), 7);
+  cardLocationOne = new Card(width * (1/15), height * (5/6), 1);
+  cardLocationTwo = new Card(width * (2/15), height * (5/6), 2);
+  cardLocationThree = new Card(width * (3/15), height * (5/6), 3);
+  cardLocationFour = new Card(width * (4/15), height * (5/6), 4);
+  cardLocationFive = new Card(width * (5/15), height * (5/6), 5);
+  cardLocationSix = new Card(width * (6/15), height * (5/6), 6);
+  cardLocationSeven = new Card(width * (7/15), height * (5/6), 7);
 }
 
 function cardStatSetup() {
@@ -216,7 +216,7 @@ function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
   muteButtonReady = true;
-  monstersSpawned = false;
+  //monstersSpawned = false;
   //console.log(mouseX + ", " + mouseY);
 }
 
@@ -260,6 +260,9 @@ function keyPressed() {
   if (key === "5") {
     newCardType = cardColourList[4];
     colourChange = true;
+  }
+  if (key === " ") {
+    monstersSpawned = false;
   }
 }
 
@@ -347,6 +350,8 @@ class Card {
   constructor(x, y, cardID) {
     this.height = cardHeight;
     this.width = cardWidth;
+    this.originalX = x;
+    this.originalY = y;
     this.x = x;
     this.y = y;
     this.cardType = cardColourList[floor(random(5))];
@@ -402,19 +407,23 @@ class Card {
       this.x = mouseX;
       this.y = mouseY;
     }
+    if (!cardInHand) {
+      this.x = this.originalX;
+      this.y = this.originalY;
+    }
   }
 
-  //funcion that returns if it is moused over and not clicked
+  //funcion that returns if the object is moused over and not clicked
   isSelected() {
     return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 && mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
   }
 
-  //function that returns if it is clicked
+  //function that returns if the object is clicked
   isClicked() {
     return this.isSelected() && mouseIsPressed;
   }
 
-  //fucntion that calls all of the card's behaviors
+  //function that calls all of the card's behaviors
   behavior() {
     this.moveCard();
     this.zoomIn();
