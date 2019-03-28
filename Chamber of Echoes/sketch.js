@@ -86,7 +86,12 @@ let monsterLocationList = [monsterLocationOne, monsterLocationTwo, monsterLocati
 let monstersSpawned = false;
 let monsterType;
 
-let heavyAttack, lightAttack;
+let heavyAttack, lightAttack, flayAttack;
+let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
+let cardHandList = [];
+
+let turnCounter = 0;
+
 
 //main draw loop of the code
 function draw() {
@@ -195,6 +200,7 @@ function cardClassSetup() {
 function cardStatSetup() {
   heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", this.cardDamage(10));
   lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", this.cardDamage(5));
+  flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", this.cardRandomDamage(8));
 }
 
 function monsterSetup() {
@@ -241,28 +247,29 @@ function checkMute() {
 
 //changes the suit of the card by using "1, 2, 3, 4, 5" while dragging the card
 function keyPressed() {
-  if (key === "1") {
-    newCardType = cardColourList[0];
-    colourChange = true;
-  }
-  if (key === "2") {
-    newCardType = cardColourList[1];
-    colourChange = true;
-  }
-  if (key === "3") {
-    newCardType = cardColourList[2];
-    colourChange = true;
-  }
-  if (key === "4") {
-    newCardType = cardColourList[3];
-    colourChange = true;
-  }
-  if (key === "5") {
-    newCardType = cardColourList[4];
-    colourChange = true;
-  }
+  // if (key === "1") {
+  //   newCardType = cardColourList[0];
+  //   colourChange = true;
+  // }
+  // if (key === "2") {
+  //   newCardType = cardColourList[1];
+  //   colourChange = true;
+  // }
+  // if (key === "3") {
+  //   newCardType = cardColourList[2];
+  //   colourChange = true;
+  // }
+  // if (key === "4") {
+  //   newCardType = cardColourList[3];
+  //   colourChange = true;
+  // }
+  // if (key === "5") {
+  //   newCardType = cardColourList[4];
+  //   colourChange = true;
+  //}
   if (key === " ") {
     monstersSpawned = false;
+    drawCard(1);
   }
 }
 
@@ -343,6 +350,37 @@ function spawnMonsters(spawnNumber) {
   
 }
 
+function drawCard(drawNumber) {
+  for (let i = 0; i < drawNumber; i++) {
+    cardHandList.pop(round(random(cardDeckList.length)));
+  }
+  console.log(cardHandList);
+}
+/* 
+- upkeepStep
+- drawStep
+- playStep
+- endStep
+*/
+function nextTurn() {
+  turnCounter += 1;
+  if (turnCounter === 1) {
+    drawCard(4);
+  }
+  upkeepStep();
+  drawStep();
+  playStep();
+  endStep();
+}
+
+function upkeepStep() {}
+
+function drawStep() {}
+
+function playStep() {}
+
+function endStep() {}
+
 //defines the class used for the card's behavior
 class Card {
 
@@ -354,7 +392,7 @@ class Card {
     this.originalY = y;
     this.x = x;
     this.y = y;
-    this.cardType = cardColourList[floor(random(5))];
+    this.cardType; //cardColourList[floor(random(5))];
     this.scalar = cardScalar;
     this.cardID = cardID;
     this.newCardType = this.cardType;
