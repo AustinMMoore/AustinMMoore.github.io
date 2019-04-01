@@ -269,7 +269,7 @@ function keyPressed() {
   //}
   if (key === " ") {
     monstersSpawned = false;
-    drawCard(1);
+    nextTurn();
   }
 }
 
@@ -352,16 +352,18 @@ function spawnMonsters(spawnNumber) {
 
 function drawCard(drawNumber) {
   for (let i = 0; i < drawNumber; i++) {
-    cardHandList.pop(round(random(cardDeckList.length)));
+    cardHandList.push (round(random(cardDeckList.length)));
   }
   console.log(cardHandList);
 }
+
 /* 
 - upkeepStep
 - drawStep
 - playStep
 - endStep
 */
+
 function nextTurn() {
   turnCounter += 1;
   if (turnCounter === 1) {
@@ -375,7 +377,11 @@ function nextTurn() {
 
 function upkeepStep() {}
 
-function drawStep() {}
+function drawStep() {
+  if (turnCounter > 1) {
+    drawCard(1);
+  }
+}
 
 function playStep() {}
 
