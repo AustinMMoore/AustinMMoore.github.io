@@ -88,6 +88,7 @@ let monsterType;
 
 let heavyAttack, lightAttack, flayAttack;
 let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
+let newDeckList = cardDeckList;
 let cardHandList = [];
 
 let turnCounter = 0;
@@ -350,9 +351,22 @@ function spawnMonsters(spawnNumber) {
   
 }
 
+function shuffleDeck() {
+  newDeckList = cardDeckList;
+  for (let i = 0; i <= cardDeckList.length; i++) {
+    
+  }
+}
+
 function drawCard(drawNumber) {
   for (let i = 0; i < drawNumber; i++) {
-    cardHandList.push (round(random(cardDeckList.length)));
+    if (cardHandList.length === 7) {
+      console.log("Your hand is full!");
+    }
+    else {
+      cardHandList.push(round(random(cardDeckList.length)));
+      cardDeckList.shift();
+    }
   }
   console.log(cardHandList);
 }
