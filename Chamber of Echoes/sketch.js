@@ -223,6 +223,7 @@ function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
   muteButtonReady = true;
+  reverse3([3, 2, 1]);
   //monstersSpawned = false;
   //console.log(mouseX + ", " + mouseY);
 }
@@ -352,10 +353,7 @@ function spawnMonsters(spawnNumber) {
 }
 
 function shuffleDeck() {
-  newDeckList = cardDeckList;
-  for (let i = 0; i <= cardDeckList.length; i++) {
-    
-  }
+  shuffle(cardDeckList);
 }
 
 function drawCard(drawNumber) {
@@ -400,6 +398,14 @@ function drawStep() {
 function playStep() {}
 
 function endStep() {}
+
+function reverse3(nums){
+  for (let i = 0; i < nums.length; i++) {
+    nums.push(nums[0]);
+    nums.shift();
+  }
+  return nums;
+}
 
 //defines the class used for the card's behavior
 class Card {
