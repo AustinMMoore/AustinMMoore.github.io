@@ -36,14 +36,19 @@ function setup() {
   rectMode(CENTER);
   textAlign(CENTER);
   imageMode(CENTER);
+
   backgroundMusic.playMode("sustain");
   buttonClick.playMode("restart");
   cardPickUp.playMode("restart");
   cardDraw.playMode("restart");
   deckShuffle.playMode("restart");
   backgroundMusic.loop();
+
+  cardStatSetup();
   cardClassSetup();
   monsterSetup();
+
+  cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
 }
 
 //setup all the variables
@@ -87,8 +92,9 @@ let monstersSpawned = false;
 let monsterType;
 
 let heavyAttack, lightAttack, flayAttack;
-let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
+let cardDeckList = []; //[lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
 let newDeckList = cardDeckList;
+let cardDiscardDeckList = [];
 let cardHandList = [];
 
 let turnCounter = 0;
@@ -199,9 +205,9 @@ function cardClassSetup() {
 }
 
 function cardStatSetup() {
-  heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", this.cardDamage(10));
-  lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", this.cardDamage(5));
-  flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", this.cardRandomDamage(8));
+  heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10);
+  lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", 5);
+  flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8)));
 }
 
 function monsterSetup() {
@@ -223,7 +229,6 @@ function mouseReleased() {
   cardInHand = false;
   draggingCardID = 0;
   muteButtonReady = true;
-  reverse3([3, 2, 1]);
   //monstersSpawned = false;
   //console.log(mouseX + ", " + mouseY);
 }
@@ -336,7 +341,6 @@ function spawnMonsters(spawnNumber) {
     //console.log(monsterOne, monsterTwo, monsterThree);
   }
 
-  
   monsterOne.xPosition = width * monsterLocationOne[0]; 
   monsterOne.yPosition = height * monsterLocationOne[1];
   image(monsterOne.monsterImage, monsterOne.xPosition, monsterOne.yPosition);
@@ -348,12 +352,17 @@ function spawnMonsters(spawnNumber) {
   monsterThree.xPosition = width * monsterLocationThree[0]; 
   monsterThree.yPosition = height * monsterLocationThree[1];
   image(monsterThree.monsterImage, monsterThree.xPosition, monsterThree.yPosition);
-  
-  
 }
 
 function shuffleDeck() {
   shuffle(cardDeckList);
+  // console.log(cardDeckList);
+}
+
+function reshuffleDeck() {
+  cardDeckList.push(cardDiscardDeckList);
+  shuffle(cardDeckList, true);
+  //console.log(cardDeckList);
 }
 
 function drawCard(drawNumber) {
@@ -362,11 +371,20 @@ function drawCard(drawNumber) {
       console.log("Your hand is full!");
     }
     else {
-      cardHandList.push(round(random(cardDeckList.length)));
+      cardHandList.push(cardDeckList[0]);
       cardDeckList.shift();
     }
   }
-  console.log(cardHandList);
+  let handListDisplay = [];
+  for (let i = 0; i < cardHandList.length; i++) {
+    handListDisplay.push(cardHandList[i].cardName);
+  }
+  console.log("Hand: " + handListDisplay);
+  let deckListDisplay = [];
+  for (let i = 0; i < cardDeckList.length; i++) {
+    deckListDisplay.push(cardDeckList[i].cardName);
+  }
+  console.log("Deck: " + deckListDisplay);
 }
 
 /* 
@@ -379,6 +397,7 @@ function drawCard(drawNumber) {
 function nextTurn() {
   turnCounter += 1;
   if (turnCounter === 1) {
+    shuffleDeck();
     drawCard(4);
   }
   upkeepStep();
@@ -390,22 +409,12 @@ function nextTurn() {
 function upkeepStep() {}
 
 function drawStep() {
-  if (turnCounter > 1) {
-    drawCard(1);
-  }
+  drawCard(1);
 }
 
 function playStep() {}
 
 function endStep() {}
-
-function reverse3(nums){
-  for (let i = 0; i < nums.length; i++) {
-    nums.push(nums[0]);
-    nums.shift();
-  }
-  return nums;
-}
 
 //defines the class used for the card's behavior
 class Card {
@@ -466,7 +475,7 @@ class Card {
     if (this.isClicked() && !cardInHand) {
       cardInHand = true;
       draggingCardID = this.cardID;
-    }
+     }
     if (cardInHand && draggingCardID === this.cardID) {
       this.x = mouseX;
       this.y = mouseY;
@@ -563,7 +572,7 @@ class CardInfo {
   }
 
   cardDamage(damageValue) {
-
+    return damageValue;
   }
 
 }
