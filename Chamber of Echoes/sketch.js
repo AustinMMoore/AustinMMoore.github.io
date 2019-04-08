@@ -11,7 +11,8 @@
 //Preloads the sound (mp3) and image (png) files used
 function preload() {
   soundFormats("mp3");
-  backgroundMusic = loadSound("assets/sounds/backgroundMusic.mp3");
+  //backgroundMusic = loadSound("assets/sounds/backgroundMusic.mp3");
+  backgroundMusic = loadSound("assets/sounds/backgroundMusic2.wav");
   buttonClick = loadSound("assets/sounds/buttonClick.mp3");
   cardPickUp = loadSound("assets/sounds/cardPickUp.mp3");
   cardDraw = loadSound("assets/sounds/cardDraw.mp3");
