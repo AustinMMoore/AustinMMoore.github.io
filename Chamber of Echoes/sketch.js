@@ -11,8 +11,7 @@
 //Preloads the sound (mp3) and image (png) files used
 function preload() {
   soundFormats("mp3");
-  //backgroundMusic = loadSound("assets/sounds/backgroundMusic.mp3");
-  backgroundMusic = loadSound("assets/sounds/backgroundMusic2.wav");
+  backgroundMusic = loadSound("assets/sounds/backgroundMusic.mp3");
   buttonClick = loadSound("assets/sounds/buttonClick.mp3");
   cardPickUp = loadSound("assets/sounds/cardPickUp.mp3");
   cardDraw = loadSound("assets/sounds/cardDraw.mp3");
@@ -548,6 +547,8 @@ class Button {
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
   }
    
+
+
   //funcion that returns if it is moused over and not clicked
   isSelected() {
     return mouseX >= this.x - this.width/2 && mouseX <= this.x + this.width/2 &&mouseY >= this.y - this.height/2 && mouseY <= this.y + this.height/2;
