@@ -92,11 +92,12 @@ let monstersSpawned = false;
 let monsterType;
 
 let heavyAttack, lightAttack, flayAttack;
-let cardDeckList = []; //[lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
+let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack, flayAttack, flayAttack];
 let newDeckList = cardDeckList;
 let cardDiscardDeckList = [];
 let cardHandList = [];
-let cardOneInfo, cardTwoInfo, cardThreeInfo, cardFourInfo, cardFiveInfo, cardSixInfo, cardSevenInfo;
+
+let moo;
 
 let turnCounter = 0;
 
@@ -206,27 +207,17 @@ function cardClassSetup() {
 }
 
 function cardStatSetup() {
-  heavyAttack = ["white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10];
-  lightAttack = ["white", 1, "Light Attack", "Deal 5 damage.", "base", 5];
-  flayAttack = ["red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8))];
-}
-
-function cardInfoSetup() {
-  cardOneInfo = new CardInfo();
-  cardTwoInfo = new CardInfo();
-  cardThreeInfo = new CardInfo();
-  cardFourInfo = new CardInfo();
-  cardFiveInfo = new CardInfo();
-  cardSixInfo = new CardInfo();
-  cardSevenInfo = new CardInfo();
+  heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10);
+  lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", 5);
+  flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8)));
 }
 
 function monsterSetup() {
-  chomperMonster = ["Chomper", 0, 25, 55, "Bite", "Consume", "Defend"];
-  blueBeanMonster = ["Blue Bean", 1, 20, 50, "Slap", "Smack", "Defend"];
-  spikySlimeMonster = ["Spiky Slime", 2, 30, 60, "Slap", "SpikeUp", "Defend"];
-  dizzyMonster = ["Dizzy", 3, 20, 45, "Hypnosis", "Smack", "Defend"];
-  fireDemonMonster = ["Fire Demon", 4, 25, 55, "Burn", "Smack", "Defend"];
+  chomperMonster = new Monster("Chomper", 0, 25, 55, "Bite", "Consume", "Defend");
+  blueBeanMonster = new Monster("Blue Bean", 1, 20, 50, "Slap", "Smack", "Defend");
+  spikySlimeMonster = new Monster("Spiky Slime", 2, 30, 60, "Slap", "SpikeUp", "Defend");
+  dizzyMonster = new Monster("Dizzy", 3, 20, 45, "Hypnosis", "Smack", "Defend");
+  fireDemonMonster = new Monster("Fire Demon", 4, 25, 55, "Burn", "Smack", "Defend");
 
   chomperMonster.monsterImage = chomperMonsterImage;
   blueBeanMonster.monsterImage = blueBeanMonsterImage;
@@ -330,6 +321,19 @@ function spawnMonsters(spawnNumber) {
     }
 
     //console.log(monsterOne, monsterTwo, monsterThree);
+  }
+
+  monsterOne.xPosition = width * monsterLocationOne[0]; 
+  monsterOne.yPosition = height * monsterLocationOne[1];
+  image(monsterOne.monsterImage, monsterOne.xPosition, monsterOne.yPosition);
+
+  monsterTwo.xPosition = width * monsterLocationTwo[0]; 
+  monsterTwo.yPosition = height * monsterLocationTwo[1];
+  image(monsterTwo.monsterImage, monsterTwo.xPosition, monsterTwo.yPosition);
+
+  monsterThree.xPosition = width * monsterLocationThree[0]; 
+  monsterThree.yPosition = height * monsterLocationThree[1];
+  image(monsterThree.monsterImage, monsterThree.xPosition, monsterThree.yPosition);
 }
 
 function shuffleDeck() {
@@ -549,17 +553,12 @@ class CardInfo {
     this.cardEffectOne = effectOne;
     this.cardEffectTwo = effectTwo;
     this.cardEffectThree = effectThree;
-    this.assignedCardX = assignedCardX;
-    this.assignedCardY = assignedCardY;
   }
 
-  behavior() {
-    this.displayText();
+  cardDamage(damageValue) {
+    return damageValue;
   }
 
-  displayText() {
-    text(this.cardText, this.assignedCardX, this.assignedCardY);
-  }
 }
 
 class Monster {
@@ -574,21 +573,5 @@ class Monster {
     this.monsterAttackThree = attackThree;
     this.xPosition = 0;
     this.yPosition = 0;
-  }
-
-  spawnMonster() {
-    if (assignedMonster === 1) {}
-    
-    monsterOne.xPosition = width * monsterLocationOne[0];
-    monsterOne.yPosition = height * monsterLocationOne[1];
-    image(monsterOne.monsterImage, monsterOne.xPosition, monsterOne.yPosition);
-  
-    monsterTwo.xPosition = width * monsterLocationTwo[0];
-    monsterTwo.yPosition = height * monsterLocationTwo[1];
-    image(monsterTwo.monsterImage, monsterTwo.xPosition, monsterTwo.yPosition);
-  
-    monsterThree.xPosition = width * monsterLocationThree[0];
-    monsterThree.yPosition = height * monsterLocationThree[1];
-    image(monsterThree.monsterImage, monsterThree.xPosition, monsterThree.yPosition);
   }
 }
