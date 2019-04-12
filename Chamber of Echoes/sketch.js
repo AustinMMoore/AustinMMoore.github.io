@@ -45,10 +45,12 @@ function setup() {
   backgroundMusic.loop();
 
   cardStatSetup();
-  cardClassSetup();
+  cardSetup();
   monsterSetup();
 
-  cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
+  cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack,flayAttack, flayAttack, flayAttack];
+
+  cardLocationOne.cardColour = "yellow";
 }
 
 //setup all the variables
@@ -92,10 +94,12 @@ let monstersSpawned = false;
 let monsterType;
 
 let heavyAttack, lightAttack, flayAttack;
-let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack, flayAttack, flayAttack];
+let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack, flayAttack];
 let newDeckList = cardDeckList;
 let cardDiscardDeckList = [];
 let cardHandList = [];
+
+let lightAttack2, heavyAttack2, flayAttack2;
 
 let moo;
 
@@ -106,7 +110,7 @@ let turnCounter = 0;
 function draw() {
   checkMute();
   background(backgroundColour);
-  buttonClassSetup();
+  buttonSetup();
   displayMenu();
   displayGame();
   displayOptions();
@@ -184,7 +188,7 @@ function windowResized() {
 }
 
 //sets up the buttons used throughout the code in their according classes
-function buttonClassSetup() {
+function buttonSetup() {
   playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
   optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
   quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30);
@@ -196,7 +200,7 @@ function buttonClassSetup() {
 }
 
 //sets up the cards used in the game as separate entities
-function cardClassSetup() {
+function cardSetup() {
   cardLocationOne = new Card(width * (1/15), height * (5/6), 1);
   cardLocationTwo = new Card(width * (2/15), height * (5/6), 2);
   cardLocationThree = new Card(width * (3/15), height * (5/6), 3);
@@ -210,6 +214,10 @@ function cardStatSetup() {
   heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10);
   lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", 5);
   flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8)));
+
+  heavyAttack2 = ["white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10];
+  lightAttack2 = ["white", 1, "Light Attack", "Deal 5 damage.", "base", 5];
+  flayAttack2 = ["red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8))];
 }
 
 function monsterSetup() {
@@ -432,6 +440,9 @@ class Card {
       this.cardType = newCardType;
       colourChange = false;
     }
+
+    this.cardType = this.cardColour;
+
     if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
     }
@@ -478,8 +489,20 @@ class Card {
     return this.isSelected() && mouseIsPressed;
   }
 
+  showCardInfo(colour, cost, name, text, rarity, effectOne, effectTwo, effectThree) {
+    this.cardColour = colour;
+    this.cardCost = cost;
+    this.cardName = name;
+    this.cardText = text;
+    this.cardRarity = rarity;
+    this.cardEffectOne = effectOne;
+    this.cardEffectTwo = effectTwo;
+    this.cardEffectThree = effectThree;
+  }
+
   //function that calls all of the card's behaviors
   behavior() {
+    this.showCardInfo("yellow");
     this.moveCard();
     this.zoomIn();
     this.showCard();
@@ -528,8 +551,6 @@ class Button {
     textSize(this.buttonTextSize);
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
   }
-   
-
 
   //funcion that returns if it is moused over and not clicked
   isSelected() {
