@@ -23,6 +23,11 @@ function preload() {
   redCard = loadImage("assets/cards/redcard.png");
   yellowCard = loadImage("assets/cards/yellowcard.png");
 
+  menuBackground = loadImage("assets/backgrounds/menuBackground.jpg");
+  dungeonBackgroundTwo = loadImage("assets/backgrounds/dungeonOne.jpg");
+  dungeonBackgroundOne = loadImage("assets/backgrounds/dungeonTwo.png");
+  optionsBackground = loadImage("assets/backgrounds/optionsBackground.jpg");
+
   chomperMonsterImage = loadImage("assets/monsters/chomper.png");
   blueBeanMonsterImage = loadImage("assets/monsters/blueBean.png");
   spikySlimeMonsterImage = loadImage("assets/monsters/spikySlime.png");
@@ -50,7 +55,7 @@ function setup() {
 
   cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAttack, heavyAttack, heavyAttack,flayAttack, flayAttack, flayAttack];
 
-  cardLocationOne.cardColour = "yellow";
+  cardLocationList = [cardLocationOne, cardLocationTwo, cardLocationThree, cardLocationFour, cardLocationFive, cardLocationSix, cardLocationSeven];
 }
 
 //setup all the variables
@@ -76,6 +81,8 @@ let textColour = "black";
 let cardColourList = ["white", "blue", "green", "red", "yellow"];
 
 let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
+
+let menuBackground, dungeonBackgroundOne, dungeonBackgroundTwo, optionsBackground;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let cardLocationOne, cardLocationTwo, cardLocationThree, cardLocationFour, cardLocationFive, cardLocationSix, cardLocationSeven;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
@@ -98,6 +105,7 @@ let cardDeckList = [lightAttack, lightAttack, lightAttack, lightAttack, lightAtt
 let newDeckList = cardDeckList;
 let cardDiscardDeckList = [];
 let cardHandList = [];
+let cardLocationList;
 
 let lightAttack2, heavyAttack2, flayAttack2;
 
@@ -119,6 +127,7 @@ function draw() {
 //shows the main menu screen where you can go to the Game, Options, or Quit (Check Console XD)
 function displayMenu() {
   if (gameState === "menu") {
+    image(menuBackground, width/2, width/4);
     playButton.show();
     optionsButton.show();
     quitButton.show();
@@ -138,6 +147,7 @@ function displayMenu() {
 //shows the card game (where for now cards can be dragged around individually)
 function displayGame() {
   if (gameState === "game") {
+    image(dungeonBackgroundOne, width/2, height/2, width, height);
     spawnMonsters(3);
     cardBehavior();
     backPlayButton.show();
@@ -150,6 +160,7 @@ function displayGame() {
 //shows the extra settings including the two themes and mute sound
 function displayOptions() {
   if (gameState === "options") {
+    image(optionsBackground, width/2, height/2, width, height);
     lightOptionButton.show();
     darkOptionButton.show();
     soundOptionButton.show();
@@ -375,6 +386,10 @@ function drawCard(drawNumber) {
     deckListDisplay.push(cardDeckList[i].cardName);
   }
   console.log("Deck: " + deckListDisplay);
+
+  for (let i = 0; i < cardHandList.length; i++) {
+    cardLocationList[i] = cardHandList[i];
+  }
 }
 
 /* 
@@ -502,7 +517,7 @@ class Card {
 
   //function that calls all of the card's behaviors
   behavior() {
-    this.showCardInfo("yellow");
+    this.showCardInfo();
     this.moveCard();
     this.zoomIn();
     this.showCard();
