@@ -17,6 +17,15 @@ function preload() {
   cardDraw = loadSound("assets/sounds/cardDraw.mp3");
   deckShuffle = loadSound("assets/sounds/deckShuffle.mp3");
 
+  blueButton = loadImage("assets/buttons/blueNotClicked.jpg");
+  blueButtonClicked = loadImage("assets/buttons/blueClicked.jpg");
+  greenButton = loadImage("assets/buttons/greenNotClicked.jpg");
+  greenButtonClicked = loadImage("assets/buttons/greenClicked.jpg");
+  yellowButton = loadImage("assets/buttons/yellowNotClicked.jpg");
+  yellowButtonClicked = loadImage("assets/buttons/yellowClicked.jpg");
+  yellowSmallButton = loadImage("assets/buttons/yellowSmallNotClicked.jpg");
+  yellowSmallButtonClicked = loadImage("assets/buttons/yellowSmallClicked.jpg");
+
   whiteCard = loadImage("assets/cards/whitecard.png");
   blueCard = loadImage("assets/cards/bluecard.png");
   greenCard = loadImage("assets/cards/greencard.png");
@@ -86,6 +95,7 @@ let menuBackground, dungeonBackgroundOne, dungeonBackgroundTwo, optionsBackgroun
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let cardLocationOne, cardLocationTwo, cardLocationThree, cardLocationFour, cardLocationFive, cardLocationSix, cardLocationSeven;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
+let blueButton, blueButtonClicked, greenButton, greenButtonClicked, yellowButton, yellowButtonClicked, yellowSmallButton, yellowSmallButtonClicked;
 
 let chomperMonster, blueBeanMonster, spikySlimeMonster, dizzyMonster, fireDemonMonster;
 let chomperMonsterImage, blueBeanMonsterImage, spikySlimeMonsterImage, dizzyMonsterImage, fireDemonMonsterImage;
@@ -200,14 +210,14 @@ function windowResized() {
 
 //sets up the buttons used throughout the code in their according classes
 function buttonSetup() {
-  playButton = new Button(width/2, height/4, 300, 200, "Play", 40);
-  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30);
-  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30);
-  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30);
-  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30);
-  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30);
-  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30);
-  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30);
+  playButton = new Button(width/2, height/4, 300, 200, "Play", 40, blueButton, blueButtonClicked);
+  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30, blueButton, blueButtonClicked);
+  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30, blueButton, blueButtonClicked);
+  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30, blueButton, blueButtonClicked);
+  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30, blueButton, blueButtonClicked);
+  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30, blueButton, blueButtonClicked);
+  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30, blueButton, blueButtonClicked);
+  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30, blueButton, blueButtonClicked);
 }
 
 //sets up the cards used in the game as separate entities
@@ -528,30 +538,28 @@ class Card {
 class Button {
 
   //sets up the initial values of the button's variables
-  constructor(x, y, width, height, text, textSize) {
+  constructor(x, y, width, height, text, textSize, buttonTypeSelected, buttonTypeNotSelected) {
     this.height = height;
     this.width = width;
     this.x = x;
     this.y = y;
     this.buttonText = text;
     this.buttonTextSize = textSize;
+    this.selectedButton = buttonTypeSelected;
+    this.notSelectedButton = buttonTypeNotSelected;
   }
 
   //displays the button with the correct colour, text, and size
   show() {
+
     if (this.isSelected()) {
-      if (backgroundColour === "white") {
-        buttonColour = 80;
-      }
-      if (backgroundColour === "grey") {
-        buttonColour = 180;
-      }
+      image(this.buttonTypeSelected, this.x, this.y, this.width, this.height);
     }
     else {
       if (backgroundColour === "white") {
         buttonColour = "grey";
       }
-      if (backgroundColour === "grey") {
+      else if (backgroundColour === "grey") {
         buttonColour = "white";
       }
     }
@@ -561,8 +569,8 @@ class Button {
       playingSound = false;
     }
     fill(buttonColour);
-    rect(this.x, this.y, this.width, this.height);
-    fill(textColour);
+    image(this.buttonTypeNotSelected, this.x, this.y, this.width, this.height);
+    // fill(textColour);
     textSize(this.buttonTextSize);
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
   }
