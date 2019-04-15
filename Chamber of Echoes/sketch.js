@@ -17,14 +17,14 @@ function preload() {
   cardDraw = loadSound("assets/sounds/cardDraw.mp3");
   deckShuffle = loadSound("assets/sounds/deckShuffle.mp3");
 
-  blueButton = loadImage("assets/buttons/blueNotClicked.jpg");
-  blueButtonClicked = loadImage("assets/buttons/blueClicked.jpg");
-  greenButton = loadImage("assets/buttons/greenNotClicked.jpg");
-  greenButtonClicked = loadImage("assets/buttons/greenClicked.jpg");
-  yellowButton = loadImage("assets/buttons/yellowNotClicked.jpg");
-  yellowButtonClicked = loadImage("assets/buttons/yellowClicked.jpg");
-  yellowSmallButton = loadImage("assets/buttons/yellowSmallNotClicked.jpg");
-  yellowSmallButtonClicked = loadImage("assets/buttons/yellowSmallClicked.jpg");
+  blueButton = loadImage("assets/buttons/blueNotClicked.png");
+  blueButtonClicked = loadImage("assets/buttons/blueClicked.png");
+  greenButton = loadImage("assets/buttons/greenNotClicked.png");
+  greenButtonClicked = loadImage("assets/buttons/greenClicked.png");
+  yellowButton = loadImage("assets/buttons/yellowNotClicked.png");
+  yellowButtonClicked = loadImage("assets/buttons/yellowClicked.png");
+  yellowSmallButton = loadImage("assets/buttons/yellowSmallNotClicked.png");
+  yellowSmallButtonClicked = loadImage("assets/buttons/yellowSmallClicked.png");
 
   whiteCard = loadImage("assets/cards/whitecard.png");
   blueCard = loadImage("assets/cards/bluecard.png");
@@ -553,15 +553,10 @@ class Button {
   show() {
 
     if (this.isSelected()) {
-      image(this.buttonTypeSelected, this.x, this.y, this.width, this.height);
+      image(blueButtonClicked, this.x, this.y, this.width, this.height);
     }
     else {
-      if (backgroundColour === "white") {
-        buttonColour = "grey";
-      }
-      else if (backgroundColour === "grey") {
-        buttonColour = "white";
-      }
+      image(blueButton, this.x, this.y, this.width, this.height);
     }
     if (this.isClicked() && !playingSound) {
       playingSound = true;
@@ -569,7 +564,7 @@ class Button {
       playingSound = false;
     }
     fill(buttonColour);
-    image(this.buttonTypeNotSelected, this.x, this.y, this.width, this.height);
+    console.log(this.width, this.height, this.x, this.y);
     // fill(textColour);
     textSize(this.buttonTextSize);
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
