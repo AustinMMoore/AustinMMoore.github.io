@@ -35,6 +35,7 @@ function preload() {
   menuBackground = loadImage("assets/backgrounds/menuBackground.jpg");
   dungeonBackgroundTwo = loadImage("assets/backgrounds/dungeonOne.jpg");
   dungeonBackgroundOne = loadImage("assets/backgrounds/dungeonTwo.png");
+  forestBackgroundOne = loadImage("assets/backgrounds/forestOne.jpg");
   optionsBackground = loadImage("assets/backgrounds/optionsBackground.jpg");
 
   chomperMonsterImage = loadImage("assets/monsters/chomper.png");
@@ -91,7 +92,7 @@ let cardColourList = ["white", "blue", "green", "red", "yellow"];
 
 let backgroundMusic, buttonClick, cardPickUp, cardDraw, deckShuffle;
 
-let menuBackground, dungeonBackgroundOne, dungeonBackgroundTwo, optionsBackground;
+let menuBackground, dungeonBackgroundOne, dungeonBackgroundTwo, forestBackgroundOne, optionsBackground;
 let whiteCard, blueCard, greenCard, redCard, yellowCard;
 let cardLocationOne, cardLocationTwo, cardLocationThree, cardLocationFour, cardLocationFive, cardLocationSix, cardLocationSeven;
 let playButton, optionsButton, quitButton, darkOptionButton, lightOptionButton, soundOptionButton, backOptionButton, backPlayButton;
@@ -157,7 +158,7 @@ function displayMenu() {
 //shows the card game (where for now cards can be dragged around individually)
 function displayGame() {
   if (gameState === "game") {
-    image(dungeonBackgroundOne, width/2, height/2, width, height);
+    image( forestBackgroundOne, width/2, height/2, width, height);
     spawnMonsters(3);
     cardBehavior();
     backPlayButton.show();
@@ -210,14 +211,14 @@ function windowResized() {
 
 //sets up the buttons used throughout the code in their according classes
 function buttonSetup() {
-  playButton = new Button(width/2, height/4, 300, 200, "Play", 40, blueButtonClicked, blueButton);
-  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30, blueButtonClicked, blueButton);
-  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30, blueButtonClicked, blueButton);
-  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30, blueButtonClicked, blueButton);
-  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30, blueButtonClicked, blueButton);
-  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30, blueButtonClicked, blueButton);
-  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30, blueButtonClicked, blueButton);
-  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30, blueButtonClicked, blueButton);
+  playButton = new Button(width/2, height/4, 300, 200, "Play", 40, "white", blueButtonClicked, blueButton);
+  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30, "white", blueButtonClicked, blueButton);
+  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30, "white", blueButtonClicked, blueButton);
+  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30, "white",blueButtonClicked, blueButton);
+  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30, "white", blueButtonClicked, blueButton);
+  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30, "white", blueButtonClicked, blueButton);
+  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30, "black", yellowSmallButtonClicked, yellowSmallButton);
+  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30, "black", yellowSmallButtonClicked, yellowSmallButton);
 }
 
 //sets up the cards used in the game as separate entities
@@ -521,7 +522,7 @@ class Card {
     this.cardEffectTwo = effectTwo;
     this.cardEffectThree = effectThree;
 
-    text(cost, this.x - (2/3) * this.cardWidth, this.y - (4/5) * this.cardHeight);
+    text(cost, this.x - 2/3 * this.cardWidth, this.y - 4/5 * this.cardHeight);
     text(name);
     text(cardText);
   }
@@ -539,7 +540,7 @@ class Card {
 class Button {
 
   //sets up the initial values of the button's variables
-  constructor(x, y, width, height, text, textSize, buttonTypeSelected, buttonTypeNotSelected) {
+  constructor(x, y, width, height, text, textSize, textColour, buttonTypeSelected, buttonTypeNotSelected) {
     this.height = height;
     this.width = width;
     this.x = x;
@@ -548,6 +549,7 @@ class Button {
     this.buttonTextSize = textSize;
     this.selectedButton = buttonTypeSelected;
     this.notSelectedButton = buttonTypeNotSelected;
+    this.textColour = textColour;
   }
 
   //displays the button with the correct colour, text, and size
@@ -564,11 +566,10 @@ class Button {
       buttonClick.play();
       playingSound = false;
     }
-    fill(buttonColour);
     //console.log(this.width, this.height, this.x, this.y);
-    // fill(textColour);
+    fill(this.textColour);
     textSize(this.buttonTextSize);
-    text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
+    text(this.buttonText, this.x, this.y + this.buttonTextSize/3);
   }
 
   //funcion that returns if it is moused over and not clicked
