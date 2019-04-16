@@ -210,14 +210,14 @@ function windowResized() {
 
 //sets up the buttons used throughout the code in their according classes
 function buttonSetup() {
-  playButton = new Button(width/2, height/4, 300, 200, "Play", 40, blueButton, blueButtonClicked);
-  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30, blueButton, blueButtonClicked);
-  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30, blueButton, blueButtonClicked);
-  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30, blueButton, blueButtonClicked);
-  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30, blueButton, blueButtonClicked);
-  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30, blueButton, blueButtonClicked);
-  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30, blueButton, blueButtonClicked);
-  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30, blueButton, blueButtonClicked);
+  playButton = new Button(width/2, height/4, 300, 200, "Play", 40, blueButtonClicked, blueButton);
+  optionsButton = new Button(width/2, height/2, 250, 150, "Options", 30, blueButtonClicked, blueButton);
+  quitButton = new Button(width/2, height * (14/20), 200, 100, "Quit", 30, blueButtonClicked, blueButton);
+  darkOptionButton = new Button(width/2, height * (1/5), 250, 150, "Dark Theme", 30, blueButtonClicked, blueButton);
+  lightOptionButton = new Button(width/2, height * (2/5), 250, 150, "Light Theme", 30, blueButtonClicked, blueButton);
+  soundOptionButton = new Button(width/2, height * (3/5), 250, 150, "Toggle Sound", 30, blueButtonClicked, blueButton);
+  backOptionButton = new Button(width/2, height * (4/5), 250, 150, "Back", 30, blueButtonClicked, blueButton);
+  backPlayButton = new Button(width - 75, 75, 150, 150, "Back", 30, blueButtonClicked, blueButton);
 }
 
 //sets up the cards used in the game as separate entities
@@ -232,13 +232,9 @@ function cardSetup() {
 }
 
 function cardStatSetup() {
-  heavyAttack = new CardInfo("white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10);
-  lightAttack = new CardInfo("white", 1, "Light Attack", "Deal 5 damage.", "base", 5);
-  flayAttack = new CardInfo("red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8)));
-
-  heavyAttack2 = ["white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10];
-  lightAttack2 = ["white", 1, "Light Attack", "Deal 5 damage.", "base", 5];
-  flayAttack2 = ["red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8))];
+  heavyAttack = ["white", 2, "Heavy Attack", "Deal 10 damage.", "base", 10];
+  lightAttack = ["white", 1, "Light Attack", "Deal 5 damage.", "base", 5];
+  flayAttack = ["red", 3, "Flay", "Deal 8 damage to a random enemy.", "reaper", ceil(random(4, 8))];
 }
 
 function monsterSetup() {
@@ -411,10 +407,6 @@ function drawCard(drawNumber) {
 
 function nextTurn() {
   turnCounter += 1;
-  if (turnCounter === 1) {
-    shuffleDeck();
-    drawCard(4);
-  }
   upkeepStep();
   drawStep();
   playStep();
@@ -424,7 +416,13 @@ function nextTurn() {
 function upkeepStep() {}
 
 function drawStep() {
-  drawCard(1);
+  if (turnCounter === 1) {
+    shuffleDeck();
+    drawCard(4);
+  }
+  else {
+    drawCard(1);
+  }
 }
 
 function playStep() {}
@@ -466,8 +464,7 @@ class Card {
       colourChange = false;
     }
 
-    this.cardType = this.cardColour;
-
+    this.cardtype = "blue";
     if (this.cardType === "white"){
       image(whiteCard, this.x, this.y, this.width * this.scalar, this.height * this.scalar);
     }
@@ -514,23 +511,27 @@ class Card {
     return this.isSelected() && mouseIsPressed;
   }
 
-  showCardInfo(colour, cost, name, text, rarity, effectOne, effectTwo, effectThree) {
-    this.cardColour = colour;
+  showCardInfo(colour, cost, name, cardText, rarity, effectOne, effectTwo, effectThree) {
+    this.cardType = colour;
     this.cardCost = cost;
     this.cardName = name;
-    this.cardText = text;
+    this.cardText = cardText;
     this.cardRarity = rarity;
     this.cardEffectOne = effectOne;
     this.cardEffectTwo = effectTwo;
     this.cardEffectThree = effectThree;
+
+    text(cost, this.x - (2/3) * this.cardWidth, this.y - (4/5) * this.cardHeight);
+    text(name);
+    text(cardText);
   }
 
   //function that calls all of the card's behaviors
   behavior() {
-    this.showCardInfo();
     this.moveCard();
     this.zoomIn();
     this.showCard();
+    this.showCardInfo();
   }
 }
 
@@ -553,10 +554,10 @@ class Button {
   show() {
 
     if (this.isSelected()) {
-      image(blueButtonClicked, this.x, this.y, this.width, this.height);
+      image(this.selectedButton, this.x, this.y, this.width, this.height);
     }
     else {
-      image(blueButton, this.x, this.y, this.width, this.height);
+      image(this.notSelectedButton, this.x, this.y, this.width, this.height);
     }
     if (this.isClicked() && !playingSound) {
       playingSound = true;
@@ -564,7 +565,7 @@ class Button {
       playingSound = false;
     }
     fill(buttonColour);
-    console.log(this.width, this.height, this.x, this.y);
+    //console.log(this.width, this.height, this.x, this.y);
     // fill(textColour);
     textSize(this.buttonTextSize);
     text(this.buttonText, this.x, this.y + this.buttonTextSize/2);
@@ -579,25 +580,6 @@ class Button {
   isClicked() {
     return this.isSelected() && mouseIsPressed;
   }
-}
-
-class CardInfo {
-
-  constructor(colour, cost, name, text, rarity, effectOne, effectTwo, effectThree) {
-    this.cardColour = colour;
-    this.cardCost = cost;
-    this.cardName = name;
-    this.cardText = text;
-    this.cardRarity = rarity;
-    this.cardEffectOne = effectOne;
-    this.cardEffectTwo = effectTwo;
-    this.cardEffectThree = effectThree;
-  }
-
-  cardDamage(damageValue) {
-    return damageValue;
-  }
-
 }
 
 class Monster {
